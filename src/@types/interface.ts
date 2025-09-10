@@ -1,10 +1,19 @@
 import { z } from "zod";
-import { UserUpdateSchema } from "./schema";
-
+export interface userInterface {
+    id: string;
+    name: string;
+    email: string;
+    avatar?: string;
+}
 export const RegisterSchema = z.object({
     email: z.string().email(),
     name: z.string().min(1, "Name is required"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    avatar: z.string().url().optional(),
+    registrationNo: z.string().min(1, "Registration number is required"),
+    branch: z.string().min(1, "Branch is required"),
+    year: z.number().min(1).max(4),
+    bio: z.string().min(1, "Bio is required"),
+    phone: z.string().min(1, "Phone number is required").optional(),
 });
 export type Register = z.infer<typeof RegisterSchema>;
 
@@ -16,7 +25,6 @@ export type VerifyRegistration = z.infer<typeof VerifyRegistrationSchema>;
 
 export const LoginSchema = z.object({
     email: z.string().email("Invalid email format").min(1, "Email is required"),
-    password: z.string().min(1, "Password is required"),
 });
 export type Login = z.infer<typeof LoginSchema>;
 
@@ -27,16 +35,6 @@ export const EmailOptionsSchema = z.object({
     html: z.string().optional(),
 });
 
-export const SendContactForm = z.object({
-    name: z.string(),
-    email: z.string(),
-    subject: z.string(),
-    message: z.string(),
-});
-
-export const UpdateProfileSchema = UserUpdateSchema.omit({
-    password: true,
-});
 export const ResetPasswordSchema = z.object({
     newPassword: z
         .string()
@@ -106,18 +104,15 @@ export const QuerySchema = z.object({
         .optional(),
 });
 export const VerifyLoginSchema = VerifyRegistrationSchema;
-export const AdminLoginSchema = LoginSchema.omit({ password: true });
-export const ForgotPasswordSchema = AdminLoginSchema;
-export const AdminRegisterSchema = RegisterSchema.omit({ password: true });
+export const AdminRegisterSchema = RegisterSchema.pick({
+    email: true,
+    name: true,
+});
 
 export type Query = z.infer<typeof QuerySchema>;
-export type ForgotPassword = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPassword = z.infer<typeof ResetPasswordSchema>;
 export type VerifyLogin = z.infer<typeof VerifyLoginSchema>;
 export type AdminRegister = z.infer<typeof AdminRegisterSchema>;
-export type AdminLogin = z.infer<typeof AdminLoginSchema>;
-export type SendContactForm = z.infer<typeof SendContactForm>;
 export type EmailInterface = z.infer<typeof EmailOptionsSchema>;
-export type UpdateProfile = z.infer<typeof UpdateProfileSchema>;
 export type RefreshToken = z.infer<typeof RefreshTokenSchema>;
 export type ChangePassword = z.infer<typeof ChangePasswordSchema>;

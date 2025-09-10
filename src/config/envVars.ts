@@ -16,7 +16,10 @@ const EnvConfigSchema = z.object({
         .int()
         .positive()
         .default(3000),
-
+    FRONTEND_URL: z.string({
+        required_error: "FRONTEND_URL environment variable is required",
+        invalid_type_error: "FRONTEND_URL must be a string",
+    }),
     NODE_ENV: z
         .enum(["development", "production", "test"], {
             required_error: "NODE_ENV environment variable is required",
@@ -32,18 +35,19 @@ const EnvConfigSchema = z.object({
             invalid_type_error: "DATABASE_URL must be a string",
         })
         .url("DATABASE_URL must be a valid URL"),
-    // GOOGLE_CLIENT_SECRET: z
-    // 	.string({
-    // 		required_error: "GOOGLE_CLIENT_SECRET environment variable is required",
-    // 		invalid_type_error: "GOOGLE_CLIENT_SECRET must be a string",
-    // 	})
-    // 	.optional(),
-    // GOOGLE_CLIENT_ID: z
-    // 	.string({
-    // 		required_error: "GOOGLE_CLIENT_ID environment variable is required",
-    // 		invalid_type_error: "GOOGLE_CLIENT_ID must be a string",
-    // 	})
-    // 	.optional(),
+    GOOGLE_CLIENT_SECRET: z
+        .string({
+            required_error:
+                "GOOGLE_CLIENT_SECRET environment variable is required",
+            invalid_type_error: "GOOGLE_CLIENT_SECRET must be a string",
+        })
+        .optional(),
+    GOOGLE_CLIENT_ID: z
+        .string({
+            required_error: "GOOGLE_CLIENT_ID environment variable is required",
+            invalid_type_error: "GOOGLE_CLIENT_ID must be a string",
+        })
+        .optional(),
 
     // JWT configuration
     JWT_SECRET: z
@@ -84,27 +88,13 @@ const EnvConfigSchema = z.object({
         .int()
         .min(0)
         .default(0),
-
-    // SMTP Email configuration
-    SMTP_HOST: z.string({
-        required_error: "SMTP_HOST environment variable is required",
-        invalid_type_error: "SMTP_HOST must be a string",
+    RESEND_API_KEY: z.string({
+        required_error: "RESEND_API_KEY environment variable is required",
+        invalid_type_error: "RESEND_API_KEY must be a string",
     }),
-    SMTP_PORT: z.coerce
-        .number({
-            required_error: "SMTP_PORT environment variable is required",
-            invalid_type_error: "SMTP_PORT must be a valid number",
-        })
-        .int()
-        .positive()
-        .default(587),
-    SMTP_USER: z.string({
-        required_error: "SMTP_USER environment variable is required",
-        invalid_type_error: "SMTP_USER must be a string",
-    }),
-    SMTP_PASSWORD: z.string({
-        required_error: "SMTP_PASSWORD environment variable is required",
-        invalid_type_error: "SMTP_PASSWORD must be a string",
+    RESEND_DOMAIN: z.string({
+        required_error: "RESEND_DOMAIN environment variable is required",
+        invalid_type_error: "RESEND_DOMAIN must be a string",
     }),
 });
 
@@ -121,12 +111,11 @@ const rawConfig = {
     REDIS_HOST: process.env.REDIS_HOST,
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_DB: process.env.REDIS_DB,
-    SMTP_HOST: process.env.SMTP_HOST,
-    SMTP_PORT: process.env.SMTP_PORT,
-    SMTP_USER: process.env.SMTP_USER,
-    SMTP_PASSWORD: process.env.SMTP_PASSWORD,
-    // GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    FRONTEND_URL: process.env.FRONTEND_URL,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    RESEND_DOMAIN: process.env.RESEND_DOMAIN,
 };
 
 // Validate and parse configuration
@@ -166,12 +155,11 @@ export const {
     REDIS_HOST,
     REDIS_PORT,
     REDIS_DB,
-    SMTP_HOST,
-    SMTP_PORT,
-    SMTP_USER,
-    SMTP_PASSWORD,
-    // GOOGLE_CLIENT_SECRET,
-    // GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID,
+    RESEND_API_KEY,
+    FRONTEND_URL,
+    RESEND_DOMAIN,
 } = envVars;
 
 export default envVars;

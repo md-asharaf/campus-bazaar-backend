@@ -4,14 +4,15 @@ import { APIError } from "@/utils/APIError";
 import catchAsync from "@/handlers/async.handler";
 import envVars from "@/config/envVars";
 import userService from "@/services/user.service";
-import { Admin, User } from "@/@types/schema";
+import { User as UserSchema, Admin as AdminSchema } from "@/@types/schema";
 import { logger } from "@/config/logger";
 
 declare global {
     namespace Express {
+        interface User extends UserSchema {}
         interface Request {
-            user?: Omit<User, "password">;
-            admin?: Admin;
+            user?: UserSchema;
+            admin?: AdminSchema;
         }
     }
 }
@@ -53,11 +54,7 @@ export const authenticateUser = catchAsync(
                 );
             }
 
-            // Exclude password from the user object attached to the request
-            const { password, ...userWithoutPassword } = user;
-
-            // Attach user to the request object
-            req.user = userWithoutPassword;
+            req.user = user;
 
             logger.info(
                 `[AUTH_MIDDLEWARE] User authenticated successfully: ${user.id}`,

@@ -1,6 +1,8 @@
 import { Router } from "express";
-import v1Routes from "./v1";
-
+import authRoutes from "./auth";
+import userRoutes from "./user";
+import publicRoutes from "./public";
+import adminRoutes from "./admin";
 const router = Router();
 
 router.get("/health", (req, res) => {
@@ -12,6 +14,9 @@ router.get("/health", (req, res) => {
     return;
 });
 
-router.use("/v1", v1Routes);
+router.use("/auth", authRoutes);
+router.use("/users", userRoutes);
+router.use("/public", publicRoutes);
+router.use("/admins", adminRoutes);
 
 export default router;

@@ -1,25 +1,31 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+    provider = "prisma-client-js"
+    output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id   String @id  @default(uuid())
-  role AdminRole @default(SUB)
-  name String
-  email String @unique
+    id    String    @id @default(uuid())
+    role  AdminRole @default(SUB)
+    name  String
+    email String    @unique
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+    id             String  @id @default(uuid())
+    name           String
+    email          String  @unique
+    avatar         String?
+    bio            String?
+    phone          String?
+    isActive       Boolean @default(true)
+    registrationNo String  @unique
+    branch         String
+    year           Int
 }
 
 enum AdminRole {

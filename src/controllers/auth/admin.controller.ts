@@ -2,27 +2,31 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import catchAsync from "@/handlers/async.handler";
 import { generateOtp, verifyOtp } from "@/services/otp.service";
-import { AccountType, generateTokens } from "@/services/token.service";
+import { generateTokens } from "@/services/token.service";
 import { APIError } from "@/utils/APIError";
 import { db } from "@/config/database";
-import { AdminLogin, VerifyLogin } from "@/@types/interface";
-
+import { Login, VerifyLogin } from "@/@types/interface";
+import mailService from "@/services/email.service";
 const login = catchAsync(async (req: Request, res: Response) => {
-    const { email } = req.body as AdminLogin;
+    const { email } = req.body as Login;
     if (!email) {
         throw new APIError(400, "Email is required");
     }
-    const adminCheck = await db.admin.findUnique({
+    const admin = await db.admin.findUnique({
         where: { email },
     });
-    if (!adminCheck) {
+    if (!admin) {
         throw new APIError(404, "Admin not found");
     }
-    const otp = await generateOtp(adminCheck.email);
+    const otp = await generateOtp(admin.email);
+    await mailService.sendEmail(
+        admin.email,
+        "OTP Verification",
+        `Your Login OTP is ${otp}`,
+    );
     res.status(200).json({
         success: true,
         message: "admin otp sent.",
-        otp: otp,
     });
     return;
 });
@@ -43,17 +47,15 @@ const verifyLogin = catchAsync(async (req: Request, res: Response) => {
         throw new APIError(404, "Admin not found");
     }
     const jti = uuidv4();
-
-    const token = generateTokens({
+    const { accessToken, refreshToken } = generateTokens({
         id: admin.id,
-        accountType: AccountType.ADMIN,
         jti,
     });
     res.json({
         message: "Admin logged in successfully",
-        tokens: {
-            accessToken: token.accessToken,
-            refreshToken: token.refreshToken,
+        data: {
+            accessToken,
+            refreshToken,
         },
     });
     return;

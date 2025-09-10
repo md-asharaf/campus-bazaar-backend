@@ -72,3 +72,97 @@ Please make sure your database server is running at `localhost:5432`.
 2025-08-27 11:49:23 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
 2025-08-27 11:49:24 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
 2025-08-27 11:49:25 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
+2025-09-10 12:57:32 [32minfo[39m: Environment configuration loaded.
+2025-09-10 12:57:33 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 12:57:33 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 12:57:33 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 12:57:34 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 12:57:57 [32minfo[39m: Environment configuration loaded.
+2025-09-10 12:57:57 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 12:57:57 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 12:57:57 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 12:57:58 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 12:58:04 [32minfo[39m: Environment configuration loaded.
+2025-09-10 12:58:05 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 12:58:05 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 12:58:05 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 12:58:06 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 12:58:09 [32minfo[39m: Environment configuration loaded.
+2025-09-10 12:58:09 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 12:58:09 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 12:58:09 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 12:58:10 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:00:40 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:00:41 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:00:41 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:00:41 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:00:41 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:01:30 [32minfo[39m: [GOOGLE_OAUTH] Validating Google user
+2025-09-10 13:01:30 [32minfo[39m: [GOOGLE_OAUTH] User validation successful
+2025-09-10 13:01:30 [34mdebug[39m: [GOOGLE_OAUTH] Serializing user
+2025-09-10 13:01:30 [31merror[39m: [USER_SERVICE] Error getting user by email 718romanempire@gmail.com: 
+Invalid `db.user.findUnique()` invocation in
+/home/md-asharaf/coding/personal/campusBazaar/backend/src/services/user.service.ts:105:40
+
+  102     includeRelations: boolean = false,
+  103 ): Promise<User | null> {
+  104     try {
+→ 105         const user = await db.user.findUnique(
+The table `public.User` does not exist in the current database.
+2025-09-10 13:02:40 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:02:41 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:02:41 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:02:41 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:02:41 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:02:53 [32minfo[39m: [GOOGLE_OAUTH] Validating Google user
+2025-09-10 13:02:53 [32minfo[39m: [GOOGLE_OAUTH] User validation successful
+2025-09-10 13:02:53 [34mdebug[39m: [GOOGLE_OAUTH] Serializing user
+2025-09-10 13:02:53 [33mwarn[39m: [USER_SERVICE] User not found with email: 718romanempire@gmail.com
+2025-09-10 13:04:49 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:04:49 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:04:49 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:04:49 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:04:50 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:06:13 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:06:14 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:06:14 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:06:14 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:06:15 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:06:18 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:06:19 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:06:19 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:06:19 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:06:20 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:06:53 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:06:54 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:06:54 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:06:54 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:06:55 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:07:05 [32minfo[39m: [GOOGLE_OAUTH] Validating Google user
+2025-09-10 13:07:05 [32minfo[39m: [GOOGLE_OAUTH] User validation successful
+2025-09-10 13:07:05 [34mdebug[39m: [GOOGLE_OAUTH] Serializing user
+2025-09-10 13:07:05 [33mwarn[39m: [USER_SERVICE] User not found with email: 718romanempire@gmail.com
+2025-09-10 13:13:47 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:13:48 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:13:48 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:13:48 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:13:49 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:13:51 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:13:52 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:13:52 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:13:52 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:13:52 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:14:00 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:14:01 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:14:01 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:14:01 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:14:01 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:15:22 [32minfo[39m: Environment configuration loaded.
+2025-09-10 13:15:23 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 13:15:23 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 13:15:23 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 13:15:24 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 13:15:32 [32minfo[39m: [GOOGLE_OAUTH] Validating Google user
+2025-09-10 13:15:32 [32minfo[39m: [GOOGLE_OAUTH] User validation successful
+2025-09-10 13:15:32 [34mdebug[39m: [GOOGLE_OAUTH] Serializing user
+2025-09-10 13:15:32 [33mwarn[39m: [USER_SERVICE] User not found with email: 718romanempire@gmail.com

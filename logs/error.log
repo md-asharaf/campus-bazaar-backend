@@ -67,3 +67,12 @@ Please make sure your database server is running at `localhost:5432`.
 2025-08-27 11:49:23 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
 2025-08-27 11:49:24 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
 2025-08-27 11:49:25 [31merror[39m: [REDIS] Failed to connect to Redis. connect ECONNREFUSED 127.0.0.1:6379
+2025-09-10 13:01:30 [31merror[39m: [USER_SERVICE] Error getting user by email 718romanempire@gmail.com: 
+Invalid `db.user.findUnique()` invocation in
+/home/md-asharaf/coding/personal/campusBazaar/backend/src/services/user.service.ts:105:40
+
+  102     includeRelations: boolean = false,
+  103 ): Promise<User | null> {
+  104     try {
+→ 105         const user = await db.user.findUnique(
+The table `public.User` does not exist in the current database.

@@ -1,50 +1,27 @@
-import nodemailer, { Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { EmailInterface } from "@/@types/email";
-import {
-    SMTP_HOST,
-    SMTP_PASSWORD,
-    SMTP_PORT,
-    SMTP_USER,
-} from "@/config/envVars";
-import { logger } from "@/config/logger";
-import { APIError } from "@/utils/APIError";
+import envVars from "@/config/envVars";
+import { Resend } from "resend";
 
-class MailService {
-    private transporter: Transporter;
+class EmailService {
+    private client: Resend;
+    private domain: string;
 
-    constructor() {
-        this.transporter = nodemailer.createTransport({
-            host: SMTP_HOST,
-            port: Number(SMTP_PORT) || 587,
-            secure: Number(SMTP_PORT) === 465,
-            auth: {
-                user: SMTP_USER,
-                pass: SMTP_PASSWORD,
-            },
-        } as SMTPTransport.Options);
-
-        this.transporter
-            .verify()
-            .then(() => logger.info("[EMAIL] connected to service."))
-            .catch((error) => logger.error(`[EMAIL] Service : ${error}`));
+    constructor(apiKey: string, domain: string) {
+        this.client = new Resend(apiKey);
+        this.domain = domain;
     }
 
-    public async sendEmail(options: EmailInterface): Promise<void> {
-        const mailOptions = {
-            from: SMTP_USER,
-            to: options.to,
-            subject: options.subject,
-            text: options.text,
-            html: options.html,
-        };
-
-        try {
-            await this.transporter.sendMail(mailOptions);
-        } catch (error: any) {
-            throw new APIError(500, error.message);
-        }
+    public async sendEmail(
+        to: string,
+        subject: string,
+        text: string,
+    ): Promise<void> {
+        await this.client.emails.send({
+            from: `Campus Bazaar <${this.domain}>`,
+            to,
+            subject,
+            text,
+        });
     }
 }
 
-export default new MailService();
+export default new EmailService(envVars.RESEND_API_KEY, envVars.RESEND_DOMAIN);

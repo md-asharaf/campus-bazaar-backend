@@ -1,3 +1,4 @@
+import envVars from "@/config/envVars";
 import { logger } from "@/config/logger";
 import Redis from "ioredis";
 
@@ -5,9 +6,9 @@ class RedisService {
     private client: Redis;
 
     constructor(
-        host: string = process.env.REDIS_HOST || "127.0.0.1",
-        port: number = Number(process.env.REDIS_PORT) || 6379,
-        db: number = Number(process.env.REDIS_DB) || 0,
+        host: string = envVars.REDIS_HOST || "127.0.0.1",
+        port: number = Number(envVars.REDIS_PORT) || 6379,
+        db: number = Number(envVars.REDIS_DB) || 0,
     ) {
         this.client = new Redis({
             host: host,
