@@ -149,7 +149,8 @@ class UserService {
     async getAllUsers(options?: {
         page?: number;
         limit?: number;
-        sortBy?: "asc" | "desc";
+        sortBy?: string;
+        sortOrder?: "asc" | "desc";
     }): Promise<{
         users: User[];
         total: number;
@@ -157,12 +158,17 @@ class UserService {
         page: number;
     }> {
         try {
-            const { page = 1, limit = 10, sortBy = "asc" } = options || {};
+            const {
+                page = 1,
+                limit = 10,
+                sortBy = "asc",
+                sortOrder = "asc",
+            } = options || {};
             const total = await db.user.count();
             const users = await db.user.findMany({
                 skip: (page - 1) * limit,
                 take: limit,
-                orderBy: { createdAt: sortBy },
+                orderBy: { [sortBy]: sortOrder },
             });
 
             logger.info(`[USER_SERVICE] All users retrieved successfully`);

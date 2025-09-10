@@ -33,9 +33,11 @@ model User {
 
 model Verification {
     id        String @id @default(uuid())
-    userId    String
+    userId    String  @unique
     imageId     String
     status    VerificationStatus @default(PENDING)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
 }
 
 model Image {

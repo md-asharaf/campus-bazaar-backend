@@ -1,7 +1,7 @@
 import z from "zod";
 export const ADMIN_ROLE = z.enum(["SUPER", "SUB"]);
 export const VERIFICATION_STATUS = z.enum(["PENDING", "VERIFIED", "REJECTED"]);
-
+export type VerificationStatus = z.infer<typeof VERIFICATION_STATUS>;
 export const UserCreateSchema = z.object({
     email: z.string().email(),
     name: z.string().min(1, "Name is required"),
@@ -51,6 +51,8 @@ export const VerificationSchema = z.object({
     userId: z.string(),
     imageId: z.string(),
     status: VERIFICATION_STATUS,
+    createdAt: z.date(),
+    updatedAt: z.date(),
 });
 
 export type Verification = z.infer<typeof VerificationSchema>;
