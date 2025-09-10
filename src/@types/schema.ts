@@ -1,5 +1,7 @@
 import z from "zod";
 export const ADMIN_ROLE = z.enum(["SUPER", "SUB"]);
+export const VERIFICATION_STATUS = z.enum(["PENDING", "VERIFIED", "REJECTED"]);
+
 export const UserCreateSchema = z.object({
     email: z.string().email(),
     name: z.string().min(1, "Name is required"),
@@ -27,6 +29,8 @@ export const UserSchema = z.object({
     registrationNo: z.string(),
     branch: z.string(),
     year: z.number().int().min(1).max(4),
+    createdAt: z.date(),
+    updatedAt: z.date(),
 });
 
 export const AdminCreateSchema = z.object({
@@ -41,6 +45,24 @@ export const AdminSchema = z.object({
     email: z.string().email(),
     role: ADMIN_ROLE,
 });
+
+export const VerificationSchema = z.object({
+    id: z.string().uuid(),
+    userId: z.string(),
+    imageId: z.string(),
+    status: VERIFICATION_STATUS,
+});
+
+export type Verification = z.infer<typeof VerificationSchema>;
+
+export const ImageSchema = z.object({
+    id: z.string().uuid(),
+    url: z.string().url(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+});
+
+export type Image = z.infer<typeof ImageSchema>;
 
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;

@@ -22,13 +22,41 @@ model User {
     avatar         String?
     bio            String?
     phone          String?
+    isVerified     Boolean @default(false)
     isActive       Boolean @default(true)
     registrationNo String  @unique
     branch         String
     year           Int
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @default(now())
+}
+
+model Verification {
+    id        String @id @default(uuid())
+    userId    String
+    imageId     String
+    status    VerificationStatus @default(PENDING)
+}
+
+model Image {
+    id            String          @id @default(uuid()) @map("_id")
+    url           String          @unique
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
 }
 
 enum AdminRole {
     SUPER
     SUB
+}
+
+enum VerificationStatus {
+    PENDING
+    VERIFIED
+    REJECTED
+}
+
+enum ImageStatus {
+    ACTIVE
+    INACTIVE
 }

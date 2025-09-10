@@ -1,12 +1,15 @@
 import { db } from "@/config/database";
 import { logger } from "@/config/logger";
 import { APIError } from "@/utils/APIError";
-import { UserCreateSchema, type UserCreate, type User } from "@/@types/schema";
+import {
+    UserCreateSchema,
+    type UserCreate,
+    type User,
+    UserUpdate,
+    UserUpdateSchema,
+} from "@/@types/schema";
 import { z } from "zod";
 class UserService {
-    /**
-     * Create a new user
-     */
     async createUser(userData: UserCreate): Promise<User> {
         try {
             const validatedData = UserCreateSchema.parse(userData);
@@ -56,9 +59,6 @@ class UserService {
         }
     }
 
-    /**
-     * Get user by ID
-     */
     async getUserById(
         userId: string,
         includeRelations: boolean = false,
@@ -94,24 +94,10 @@ class UserService {
         }
     }
 
-    /**
-     * Get user by email
-     */
-    async getUserByEmail(
-        email: string,
-        includeRelations: boolean = false,
-    ): Promise<User | null> {
+    async getUserByEmail(email: string): Promise<User | null> {
         try {
             const user = await db.user.findUnique({
                 where: { email },
-                // include: includeRelations
-                //     ? {
-                //         cart: true,
-                //         orders: true,
-                //         reviews: true,
-                //         addresses: true
-                //     }
-                //     : undefined,
             });
 
             if (!user) {
@@ -133,22 +119,62 @@ class UserService {
             throw new APIError(500, "Failed to retrieve user");
         }
     }
-    /**
-     * Check if user exists by email
-     */
-    async userExists(email: string): Promise<boolean> {
+
+    async updateUser(userId: string, data: UserUpdate): Promise<User> {
         try {
-            const user = await db.user.findUnique({
-                where: { email },
-                select: { id: true },
+            const validatedData = UserUpdateSchema.parse(data);
+            const user = await db.user.update({
+                where: { id: userId },
+                data: validatedData,
             });
-            return !!user;
+
+            if (!user) {
+                logger.warn(`[USER_SERVICE] User not found with ID: ${userId}`);
+                throw new APIError(404, "User not found");
+            }
+
+            logger.info(
+                `[USER_SERVICE] User updated successfully with ID: ${userId}`,
+            );
+            return user;
         } catch (error) {
             logger.error(
-                `[USER_SERVICE] Error checking if user exists with email ${email}:`,
+                `[USER_SERVICE] Error updating user by ID ${userId}:`,
                 error,
             );
-            throw new APIError(500, "Failed to check user existence");
+            throw new APIError(500, "Failed to update user");
+        }
+    }
+
+    async getAllUsers(options?: {
+        page?: number;
+        limit?: number;
+        sortBy?: "asc" | "desc";
+    }): Promise<{
+        users: User[];
+        total: number;
+        totalPages: number;
+        page: number;
+    }> {
+        try {
+            const { page = 1, limit = 10, sortBy = "asc" } = options || {};
+            const total = await db.user.count();
+            const users = await db.user.findMany({
+                skip: (page - 1) * limit,
+                take: limit,
+                orderBy: { createdAt: sortBy },
+            });
+
+            logger.info(`[USER_SERVICE] All users retrieved successfully`);
+            return {
+                users,
+                total,
+                totalPages: Math.ceil(total / limit),
+                page,
+            };
+        } catch (error) {
+            logger.error(`[USER_SERVICE] Error getting all users:`, error);
+            throw new APIError(500, "Failed to retrieve users");
         }
     }
 }

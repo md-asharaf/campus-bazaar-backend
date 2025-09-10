@@ -1,1 +1,4 @@
-export default {};
+import { default as profile } from "./profile.controller";
+export default {
+    profile,
+};

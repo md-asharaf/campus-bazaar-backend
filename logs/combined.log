@@ -203,3 +203,193 @@ The table `public.User` does not exist in the current database.
 2025-09-10 15:08:15 [32minfo[39m: [PRISMA] : connected to database
 2025-09-10 15:10:27 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
 2025-09-10 15:11:31 [33mwarn[39m: [REDIS] Key otp:mdasharaf.dev@gmail.com not found.
+2025-09-10 15:13:36 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:13:37 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:13:37 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:13:37 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:13:37 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:21:45 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:21:46 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:21:46 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:21:46 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:21:47 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:21:49 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:21:50 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:21:50 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:21:50 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:21:50 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:22:02 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:22:02 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:22:02 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:22:02 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:22:03 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:24:02 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:24:03 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:24:03 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:24:03 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:24:04 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:24:44 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:24:44 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:24:44 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:24:44 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:24:45 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:26:20 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:26:21 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:26:21 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:26:21 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:26:21 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:26:43 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:26:44 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:26:44 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:26:44 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:26:44 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:28:25 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:28:26 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:28:26 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:28:26 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:28:27 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:28:43 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:28:44 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:28:44 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:28:44 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:28:47 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:29:16 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:29:17 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:29:17 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:29:17 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:29:18 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:32:38 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:32:39 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:32:39 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:32:39 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:32:40 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:33:07 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:33:08 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:33:08 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:33:08 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:33:09 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:34:25 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:34:26 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:34:26 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:34:26 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:34:27 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:34:59 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:35:00 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:35:00 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:35:00 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:35:00 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:37:25 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:37:26 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:37:26 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:37:26 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:37:26 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:38:05 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:38:05 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:38:05 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:38:05 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:38:06 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:38:17 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:38:18 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:38:18 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:38:18 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:38:18 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:38:39 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:38:40 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:38:40 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:38:40 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:38:40 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:39:19 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:39:20 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:39:20 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:39:20 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:39:21 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:40:32 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:40:33 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:40:33 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:40:33 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:40:34 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:40:43 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:40:44 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:40:44 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:40:44 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:40:44 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:41:00 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:41:00 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:41:00 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:41:00 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:41:03 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:41:11 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:41:12 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:41:12 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:41:12 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:41:13 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:41:53 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:41:53 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:41:53 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:41:53 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:41:54 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:43:20 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:43:21 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:43:21 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:43:21 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:43:21 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:43:53 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:43:54 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:43:54 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:43:54 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:43:54 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:44:04 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:44:05 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:44:05 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:44:05 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:44:06 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:44:08 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:44:09 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:44:09 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:44:09 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:44:09 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:45:08 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:45:08 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:45:08 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:45:08 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:45:09 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:46:02 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:46:03 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:46:03 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:46:03 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:46:06 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:46:36 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:46:36 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:46:36 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:46:36 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:46:39 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:46:55 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:46:56 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:46:56 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:46:56 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:46:56 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:57:18 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:57:18 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:57:18 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:57:18 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:57:19 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:57:25 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:57:25 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:57:25 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:57:25 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:57:26 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:58:23 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:58:23 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:58:23 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:58:23 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:58:24 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:58:41 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:58:42 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:58:42 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:58:42 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:58:42 [32minfo[39m: [PRISMA] : connected to database
+2025-09-10 15:58:59 [32minfo[39m: Environment configuration loaded.
+2025-09-10 15:59:00 [32minfo[39m: [GOOGLE_OAUTH] Google authentication strategy initialized successfully
+2025-09-10 15:59:00 [32minfo[39m: [SERVER] backend is live on http://localhost:3000
+2025-09-10 15:59:00 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-10 15:59:00 [32minfo[39m: [PRISMA] : connected to database
