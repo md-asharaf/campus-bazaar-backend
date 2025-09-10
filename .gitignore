@@ -1,6 +1,6 @@
 node_modules
 prisma/migrations
-
+logs
 .env
 .example.env
 generated

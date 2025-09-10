@@ -16,7 +16,7 @@ class EmailService {
         text: string,
     ): Promise<void> {
         await this.client.emails.send({
-            from: `Campus Bazaar <${this.domain}>`,
+            from: `Campus Bazaar <mail@${this.domain}>`,
             to,
             subject,
             text,

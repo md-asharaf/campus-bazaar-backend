@@ -7,7 +7,7 @@ export const UserCreateSchema = z.object({
     registrationNo: z.string().min(1, "Registration number is required"),
     branch: z.string().min(1, "Branch is required"),
     year: z.number().min(1, "Year is required").max(4),
-    bio: z.string().min(1, "Bio is required"),
+    bio: z.string().min(1, "Bio is required").optional(),
     phone: z.string().min(1, "Phone number is required").optional(),
 });
 
