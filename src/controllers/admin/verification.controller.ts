@@ -3,6 +3,7 @@ import { VerificationStatus } from "@/@types/schema";
 import verificationService from "@/services/verification.service";
 import { APIResponse } from "@/utils/APIResponse";
 import { Request, Response } from "express";
+
 const getVerification = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const verification =

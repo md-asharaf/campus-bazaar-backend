@@ -68,7 +68,6 @@ const googleCallback = catchAsync(
                     if (!req.user) {
                         throw new APIError(401, "Google authentication failed");
                     }
-                    console.log(req.user);
                     const googleUser = req.user as userInterface;
 
                     let existingUser = await userService.getUserByEmail(
