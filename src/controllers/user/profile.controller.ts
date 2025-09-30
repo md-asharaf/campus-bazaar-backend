@@ -1,5 +1,6 @@
 import { User, UserUpdate } from "@/@types/schema";
 import catchAsync from "@/handlers/async.handler";
+import { uploadImage } from "@/services/imagekit.service";
 import userService from "@/services/user.service";
 import verificationService from "@/services/verification.service";
 import { APIError } from "@/utils/APIError";
@@ -40,11 +41,12 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
 
 const verifyMyself = catchAsync(async (req: Request, res: Response) => {
     const user = req.user as User;
-    const { imageId } = req.body as { imageId: string };
-    if (!imageId) {
-        throw new APIError(400, "Image ID is required");
+    const image = req.file;
+    if (!image) {
+        throw new APIError(400, "No image provided");
     }
-    await verificationService.createVerification(user.id, imageId);
+    const uploadedImage = await uploadImage(image);
+    await verificationService.createVerification(user.id, uploadedImage.id);
     res.status(200).json(
         new APIResponse(true, "User verified successfully", {
             user,

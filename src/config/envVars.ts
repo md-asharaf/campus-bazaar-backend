@@ -96,6 +96,37 @@ const EnvConfigSchema = z.object({
         required_error: "RESEND_DOMAIN environment variable is required",
         invalid_type_error: "RESEND_DOMAIN must be a string",
     }),
+
+    IMAGEKIT_PUBLIC_KEY: z.string({
+        required_error: "IMAGEKIT_PUBLIC_KEY environment variable is required",
+        invalid_type_error: "IMAGEKIT_PUBLIC_KEY must be a string",
+    }),
+    IMAGEKIT_PRIVATE_KEY: z.string({
+        required_error: "IMAGEKIT_PRIVATE_KEY environment variable is required",
+        invalid_type_error: "IMAGEKIT_PRIVATE_KEY must be a string",
+    }),
+    IMAGEKIT_API_URL: z.string({
+        required_error: "IMAGEKIT_API_URL environment variable is required",
+        invalid_type_error: "IMAGEKIT_API_URL must be a string",
+    }),
+    ELASTICSEARCH_URL: z.string({
+        required_error: "ELASTICSEARCH_URL environment variable is required",
+        invalid_type_error: "ELASTICSEARCH_URL must be a string",
+    }),
+    ELASTICSEARCH_INDEX: z.string({
+        required_error: "ELASTICSEARCH_INDEX environment variable is required",
+        invalid_type_error: "ELASTICSEARCH_INDEX must be a string",
+    }),
+    ELASTICSEARCH_USERNAME: z.string({
+        required_error:
+            "ELASTICSEARCH_USERNAME environment variable is required",
+        invalid_type_error: "ELASTICSEARCH_USERNAME must be a string",
+    }),
+    ELASTICSEARCH_PASSWORD: z.string({
+        required_error:
+            "ELASTICSEARCH_PASSWORD environment variable is required",
+        invalid_type_error: "ELASTICSEARCH_PASSWORD must be a string",
+    }),
 });
 
 // Define the config type using Zod inference
@@ -116,6 +147,13 @@ const rawConfig = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     RESEND_DOMAIN: process.env.RESEND_DOMAIN,
+    IMAGEKIT_API_URL: process.env.IMAGEKIT_API_URL,
+    IMAGEKIT_PUBLIC_KEY: process.env.IMAGEKIT_PUBLIC_KEY,
+    IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+    ELASTICSEARCH_URL: process.env.ELASTICSEARCH_URL,
+    ELASTICSEARCH_INDEX: process.env.ELASTICSEARCH_INDEX,
+    ELASTICSEARCH_USERNAME: process.env.ELASTICSEARCH_USERNAME,
+    ELASTICSEARCH_PASSWORD: process.env.ELASTICSEARCH_PASSWORD,
 };
 
 // Validate and parse configuration
@@ -160,6 +198,14 @@ export const {
     RESEND_API_KEY,
     FRONTEND_URL,
     RESEND_DOMAIN,
+    IMAGEKIT_API_URL,
+    IMAGEKIT_PRIVATE_KEY,
+    IMAGEKIT_PUBLIC_KEY,
+    SESSION_SECRET,
+    ELASTICSEARCH_INDEX,
+    ELASTICSEARCH_PASSWORD,
+    ELASTICSEARCH_URL,
+    ELASTICSEARCH_USERNAME,
 } = envVars;
 
 export default envVars;
