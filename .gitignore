@@ -4,3 +4,5 @@ logs
 .env
 .example.env
 generated
+dist
+tsconfig.tsbuildinfo
