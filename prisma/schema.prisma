@@ -9,10 +9,12 @@ datasource db {
 }
 
 model Admin {
-    id    String    @id @default(uuid())
-    role  AdminRole @default(SUB)
-    name  String
-    email String    @unique
+    id        String    @id @default(uuid())
+    role      AdminRole @default(SUB)
+    name      String
+    email     String    @unique
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 }
 
 model User {
@@ -27,6 +29,8 @@ model User {
     registrationNo String     @unique
     branch         String
     year           Int
+    createdAt      DateTime   @default(now())
+    updatedAt      DateTime   @updatedAt
     wishlists      Wishlist[]
     feedback       Feedback?
     messages       Message[]
@@ -61,6 +65,8 @@ model Item {
     isVerified Boolean    @default(false)
     isSold     Boolean    @default(false)
     categoryId String?
+    createdAt  DateTime   @default(now())
+    updatedAt  DateTime   @updatedAt
     images     Image[]
     category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
     wishlists  Wishlist[]
@@ -81,7 +87,6 @@ model Wishlist {
     userId    String
     itemId    String
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 

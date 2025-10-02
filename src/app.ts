@@ -6,30 +6,51 @@ import morgan from "morgan";
 import helmet from "helmet";
 import passport from "passport";
 import session from "express-session";
+import { errorConverter, errorHandler, handleUnhandledRejection, handleUncaughtException } from "./handlers/error.handler";
 
 import "./strategies/google-oauth";
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Handle unhandled rejections and exceptions
+handleUnhandledRejection();
+handleUncaughtException();
+
+app.use(express.json({ 
+    limit: '10mb',
+    strict: true 
+}));
+app.use(express.urlencoded({ 
+    extended: true, 
+    limit: '10mb' 
+}));
 app.use(
     cors({
-        origin: envVars.FRONTEND_URL || "http://localhost:5173",
+        origin: envVars.NODE_ENV === 'production' 
+            ? envVars.FRONTEND_URL 
+            : [envVars.FRONTEND_URL || "http://localhost:5173", "http://localhost:3000"],
         credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     }),
 );
-app.use(morgan("dev"));
-app.use(helmet());
+app.use(morgan(envVars.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+    contentSecurityPolicy: envVars.NODE_ENV === 'production' ? undefined : false,
+}));
 
 // Session configuration for Passport
 app.use(
     session({
-        secret: envVars.JWT_SECRET,
+        secret: envVars.SESSION_SECRET || envVars.JWT_SECRET,
         resave: false,
         saveUninitialized: false,
+        name: 'campus-bazaar-session',
         cookie: {
             secure: envVars.NODE_ENV === "production",
-            maxAge: 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            sameSite: envVars.NODE_ENV === "production" ? 'strict' : 'lax',
         },
     }),
 );
@@ -38,6 +59,23 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// API Routes
 app.use(router);
+
+// 404 handler
+app.use('*', (req, res) => {
+    res.status(404).json({
+        success: false,
+        error: {
+            code: 404,
+            message: `Route ${req.originalUrl} not found`,
+        },
+        timestamp: new Date().toISOString(),
+    });
+});
+
+// Error handling middleware (must be last)
+app.use(errorConverter);
+app.use(errorHandler);
 
 export default app;
