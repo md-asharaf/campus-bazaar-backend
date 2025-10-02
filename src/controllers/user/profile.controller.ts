@@ -23,7 +23,7 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
     if (!avatar && !bio && !branch && !name && !phone && !year) {
         throw new APIError(400, "No fields to update");
     }
-    const updatedUser = await userService.updateUser(user.id, {
+    const updatedUser = await userService.update(user.id, {
         avatar,
         bio,
         branch,
@@ -46,7 +46,7 @@ const verifyMyself = catchAsync(async (req: Request, res: Response) => {
         throw new APIError(400, "No image provided");
     }
     const uploadedImage = await uploadImage(image);
-    await verificationService.createVerification(user.id, uploadedImage.id);
+    await verificationService.create(user.id, uploadedImage.id);
     res.status(200).json(
         new APIResponse(true, "User verified successfully", {
             user,
