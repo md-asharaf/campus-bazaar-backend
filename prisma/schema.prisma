@@ -14,7 +14,7 @@ model Admin {
     name      String
     email     String    @unique
     createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
+    updatedAt DateTime  @updatedAt @default(now())
 }
 
 model User {
@@ -34,7 +34,8 @@ model User {
     wishlists      Wishlist[]
     feedback       Feedback?
     messages       Message[]
-    conversations  Chat[]
+    chatsAsUser1   Chat[]     @relation("User1Chats")
+    chatsAsUser2   Chat[]     @relation("User2Chats")
 }
 
 model Verification {
@@ -48,7 +49,7 @@ model Verification {
 }
 
 model Image {
-    id            String         @id @default(uuid())
+    id            String         @id
     url           String         @unique
     createdAt     DateTime       @default(now())
     updatedAt     DateTime       @updatedAt
@@ -112,11 +113,12 @@ model Message {
     readAt      DateTime?
     sentAt      DateTime  @default(now())
     sender      User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
-    Media       Media[]
+    chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    media       Media[]
 }
 
 model Media {
-    id        String   @id @default(uuid())
+    id        String   @id
     url       String
     messageId String
     createdAt DateTime @default(now())
@@ -125,12 +127,16 @@ model Media {
 }
 
 model Chat {
-    id           String   @id @default(uuid())
-    user1_id     String
-    user2_id     String
-    createdAt    DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-    participants User[]
+    id        String    @id @default(uuid())
+    user1_id  String
+    user2_id  String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    user1     User      @relation("User1Chats", fields: [user1_id], references: [id], onDelete: Cascade)
+    user2     User      @relation("User2Chats", fields: [user2_id], references: [id], onDelete: Cascade)
+    messages  Message[]
+
+    @@unique([user1_id, user2_id])
 }
 
 enum AdminRole {

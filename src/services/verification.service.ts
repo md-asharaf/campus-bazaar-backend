@@ -1,5 +1,6 @@
 import { Verification, VerificationStatus } from "@/@types/schema";
 import { db } from "@/config/database";
+import { Prisma } from "../../generated/prisma";
 
 class VerificationService {
     async create(userId: string, imageId: string): Promise<Verification> {
@@ -18,8 +19,69 @@ class VerificationService {
         return await db.verification.findUnique({ where: { imageId } });
     }
 
-    async findMany(where?: any): Promise<Verification[]> {
-        return await db.verification.findMany({ where });
+    async findMany(params?: {
+        userId?: string;
+        status?: VerificationStatus;
+        page?: number;
+        limit?: number;
+        sortBy?: string;
+        sortOrder?: 'asc' | 'desc';
+        includeRelations?: boolean;
+    }): Promise<{
+        items: Verification[];
+        total: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+    }> {
+        const { 
+            userId, 
+            status, 
+            page = 1, 
+            limit = 10, 
+            sortBy = 'createdAt',
+            sortOrder = 'desc',
+            includeRelations = false 
+        } = params || {};
+        
+        // Build where clause
+        const where: Prisma.VerificationWhereInput = {};
+        
+        if (userId) where.userId = userId;
+        if (status) where.status = status;
+        
+        // Get total count
+        const total = await db.verification.count({ where });
+        
+        // Build query options
+        const queryOptions: Prisma.VerificationFindManyArgs = { where };
+        
+        // Pagination
+        queryOptions.skip = (page - 1) * limit;
+        queryOptions.take = limit;
+        
+        // Sorting
+        const orderBy: Prisma.VerificationOrderByWithRelationInput = {};
+        orderBy[sortBy as keyof Prisma.VerificationOrderByWithRelationInput] = sortOrder;
+        queryOptions.orderBy = orderBy;
+        
+        // Relations
+        if (includeRelations) {
+            queryOptions.include = {
+                image: true
+            };
+        }
+        
+        const items = await db.verification.findMany(queryOptions);
+        const totalPages = Math.ceil(total / limit);
+        
+        return {
+            items,
+            total,
+            totalPages,
+            page,
+            limit
+        };
     }
 
     async updateStatus(id: string, status: VerificationStatus): Promise<Verification> {
