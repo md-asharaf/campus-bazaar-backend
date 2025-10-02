@@ -7,7 +7,7 @@ import type {
     Response,
 } from "express";
 import { ZodError } from "zod";
-import { Prisma } from "generated/prisma";
+import { Prisma } from "../../generated/prisma";
 
 export const errorConverter: ErrorRequestHandler = (
     err,

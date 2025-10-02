@@ -46,7 +46,7 @@ export const authenticateUser = catchAsync(
                 throw new APIError(401, "Invalid token payload.");
             }
             // Check if user exists
-            const user = await userService.getUserById(decoded.id);
+            const user = await userService.findById(decoded.id);
             if (!user) {
                 throw new APIError(
                     401,
