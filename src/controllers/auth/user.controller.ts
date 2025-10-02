@@ -14,7 +14,7 @@ const register = catchAsync(async (req: Request, res: Response) => {
     if (!email || !name || !branch || !registrationNo || !year) {
         throw new APIError(400, "Missing required fields.");
     }
-    const existingUser = await userService.getUserByEmail(email);
+    const existingUser = await userService.findByEmail(email);
     if (existingUser) {
         throw new APIError(400, "User already exists with this email.");
     }
@@ -23,7 +23,7 @@ const register = catchAsync(async (req: Request, res: Response) => {
         throw new APIError(400, "User not found");
     }
     // create user
-    const user = await userService.createUser({
+    const user = await userService.create({
         bio,
         branch,
         email,
@@ -70,7 +70,7 @@ const googleCallback = catchAsync(
                     }
                     const googleUser = req.user as userInterface;
 
-                    let existingUser = await userService.getUserByEmail(
+                    let existingUser = await userService.findByEmail(
                         googleUser.email,
                     );
 

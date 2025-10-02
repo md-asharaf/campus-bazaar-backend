@@ -7,7 +7,7 @@ import { Request, Response } from "express";
 const getVerification = async (req: Request, res: Response) => {
     const { userId } = req.params;
     const verification =
-        await verificationService.getVerificationByUserId(userId);
+        await verificationService.findByUserId(userId);
     res.status(200).json(
         new APIResponse(true, "verification retrieved successfully", {
             verification,
@@ -19,19 +19,22 @@ const getAllVerifications = async (req: Request, res: Response) => {
     const {
         page = 1,
         limit = 10,
-        sortOrder,
-        sortBy,
+        sortOrder = 'desc',
+        sortBy = 'createdAt',
+        status
     } = QuerySchema.parse(req.query);
-    const verifications = await verificationService.getAllVerifications({
+    
+    const result = await verificationService.findMany({
         page,
         limit,
         sortBy,
-        sortOrder,
+        sortOrder: sortOrder as 'asc' | 'desc',
+        status: status as VerificationStatus,
+        includeRelations: true
     });
+    
     res.status(200).json(
-        new APIResponse(true, "verification retrieved successfully", {
-            verifications,
-        }),
+        new APIResponse(true, "verifications retrieved successfully", result),
     );
     return;
 };
@@ -41,7 +44,7 @@ const updateVerification = async (req: Request, res: Response) => {
     const { status } = req.body as {
         status: VerificationStatus;
     };
-    const verification = await verificationService.updateVerification(
+    const verification = await verificationService.updateStatus(
         id,
         status,
     );
