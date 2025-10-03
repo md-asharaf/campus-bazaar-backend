@@ -12,7 +12,7 @@ type CustomSocket = Socket<ClientToServerEvents, ServerToClientEvents, InterServ
 const activeUsers = new Map<string, string>();
 const userSockets = new Map<string, string>();
 
-class SimpleSocketManager {
+class SocketManager {
     private io: SocketIOServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
     constructor(server: HTTPServer) {
@@ -190,6 +190,6 @@ class SimpleSocketManager {
     }
 }
 
-export function initializeSocket(server: HTTPServer): SimpleSocketManager {
-    return new SimpleSocketManager(server);
+export function initializeSocket(server: HTTPServer): SocketManager {
+    return new SocketManager(server);
 }
