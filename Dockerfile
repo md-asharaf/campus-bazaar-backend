@@ -1,35 +1,42 @@
-ARG NODE_VERSION=20.14.0
-
-FROM node:${NODE_VERSION}-alpine AS builder
+FROM node:alpine AS builder
 
 WORKDIR /usr/src/template
 
-COPY package*.json ./
-RUN npm install
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN npx prisma generate
-RUN npm run build
-RUN npm prune --production
+# Generate Prisma client first
+RUN pnpm prisma generate
+
+# Build the application (needs dev dependencies, so build before pruning)
+RUN pnpm run build
+
+# Now prune dev dependencies for smaller production image  
+RUN pnpm prune --prod
 
 
-FROM node:${NODE_VERSION}-alpine AS production
+FROM node:alpine AS production
 
-WORKDIR /usr/src/template
+WORKDIR /usr/src/app
 
+# Copy only what's needed to run the application
 COPY --from=builder /usr/src/template/node_modules ./node_modules
 COPY --from=builder /usr/src/template/dist ./dist
 COPY --from=builder /usr/src/template/generated ./generated
-COPY --from=builder /usr/src/template/package*.json ./
 COPY --from=builder /usr/src/template/prisma ./prisma
-COPY --from=builder /usr/src/template/.env ./
-
-# Using the correct port from your application
+COPY --from=builder /usr/src/template/package.json ./package.json
+# Expose port
 EXPOSE 3000
 
+# Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+  CMD 2222222222222222222222222222222 || exit 1
 
-# Run with module-alias for path aliases
+# Start the application
 CMD ["node", "-r", "module-alias/register", "dist/index.js"]
