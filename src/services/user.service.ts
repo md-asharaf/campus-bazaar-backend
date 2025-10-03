@@ -55,7 +55,6 @@ class UserService {
             includeRelations = false 
         } = params || {};
         
-        // Build where clause
         const where: Prisma.UserWhereInput = {};
         
         if (email) where.email = email;
@@ -72,22 +71,17 @@ class UserService {
             ];
         }
         
-        // Get total count
         const total = await db.user.count({ where });
         
-        // Build query options
         const queryOptions: Prisma.UserFindManyArgs = { where };
         
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
         
-        // Sorting
         const orderBy: Prisma.UserOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.UserOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
         
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 feedback: true,

@@ -34,22 +34,21 @@ class FeedbackService {
         page: number;
         limit: number;
     }> {
-        const { 
+        const {
             userId,
             rating,
             minRating,
             maxRating,
             search,
-            page = 1, 
-            limit = 10, 
+            page = 1,
+            limit = 10,
             sortBy = 'createdAt',
             sortOrder = 'desc',
-            includeRelations = false 
+            includeRelations = false
         } = params || {};
-        
-        // Build where clause
+
         const where: Prisma.FeedbackWhereInput = {};
-        
+
         if (userId) where.userId = userId;
         if (rating) where.rating = rating;
         if (minRating !== undefined || maxRating !== undefined) {
@@ -60,23 +59,18 @@ class FeedbackService {
         if (search) {
             where.content = { contains: search, mode: 'insensitive' };
         }
-        
-        // Get total count
+
         const total = await db.feedback.count({ where });
-        
-        // Build query options
+
         const queryOptions: Prisma.FeedbackFindManyArgs = { where };
-        
-        // Pagination
+
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
-        
-        // Sorting
+
         const orderBy: Prisma.FeedbackOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.FeedbackOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
-        
-        // Relations
+
         if (includeRelations) {
             queryOptions.include = {
                 user: {
@@ -91,10 +85,10 @@ class FeedbackService {
                 }
             };
         }
-        
+
         const items = await db.feedback.findMany(queryOptions);
         const totalPages = Math.ceil(total / limit);
-        
+
         return {
             items,
             total,

@@ -47,7 +47,6 @@ class ItemService {
             includeRelations = false 
         } = params || {};
         
-        // Build where clause
         const where: Prisma.ItemWhereInput = {};
         
         if (sellerId) where.sellerId = sellerId;
@@ -63,22 +62,17 @@ class ItemService {
             where.title = { contains: search, mode: 'insensitive' };
         }
         
-        // Get total count
         const total = await db.item.count({ where });
         
-        // Build query options
         const queryOptions: Prisma.ItemFindManyArgs = { where };
         
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
         
-        // Sorting
         const orderBy: Prisma.ItemOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.ItemOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
         
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 images: true,

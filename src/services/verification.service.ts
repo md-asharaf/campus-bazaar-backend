@@ -44,28 +44,22 @@ class VerificationService {
             includeRelations = false 
         } = params || {};
         
-        // Build where clause
         const where: Prisma.VerificationWhereInput = {};
         
         if (userId) where.userId = userId;
         if (status) where.status = status;
         
-        // Get total count
         const total = await db.verification.count({ where });
         
-        // Build query options
         const queryOptions: Prisma.VerificationFindManyArgs = { where };
         
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
         
-        // Sorting
         const orderBy: Prisma.VerificationOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.VerificationOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
         
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 image: true

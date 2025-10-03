@@ -31,7 +31,6 @@ class WishlistService {
         
         let where: Prisma.WishlistWhereInput = { userId };
         
-        // Add item-related filters
         if (filters?.itemCategory || filters?.itemAvailable !== undefined || filters?.priceRange) {
             where.item = {};
             
@@ -114,13 +113,11 @@ class WishlistService {
             includeRelations = false 
         } = params || {};
         
-        // Build where clause
         const where: Prisma.WishlistWhereInput = {};
         
         if (userId) where.userId = userId;
         if (itemId) where.itemId = itemId;
         
-        // Add item-related filters
         if (itemCategory || itemAvailable !== undefined || priceRange) {
             where.item = {};
             
@@ -139,22 +136,17 @@ class WishlistService {
             }
         }
         
-        // Get total count
         const total = await db.wishlist.count({ where });
         
-        // Build query options
         const queryOptions: Prisma.WishlistFindManyArgs = { where };
         
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
         
-        // Sorting
         const orderBy: Prisma.WishlistOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.WishlistOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
         
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 user: {

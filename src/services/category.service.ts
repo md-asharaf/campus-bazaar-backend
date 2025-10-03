@@ -39,29 +39,23 @@ class CategoryService {
             includeRelations = false
         } = params || {};
 
-        // Build where clause
         const where: Prisma.CategoryWhereInput = {};
 
         if (search) {
             where.name = { contains: search, mode: 'insensitive' };
         }
 
-        // Get total count
         const total = await db.category.count({ where });
 
-        // Build query options
         const queryOptions: Prisma.CategoryFindManyArgs = { where };
 
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
 
-        // Sorting
         const orderBy: Prisma.CategoryOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.CategoryOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
 
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 image: true,

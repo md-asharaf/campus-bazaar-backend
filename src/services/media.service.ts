@@ -18,7 +18,6 @@ class MediaService {
 
     async findMany(params?: {
         messageId?: string;
-        url?: string;
         dateFrom?: Date;
         dateTo?: Date;
         page?: number;
@@ -33,44 +32,42 @@ class MediaService {
         page: number;
         limit: number;
     }> {
-        const { 
+        const {
             messageId,
-            url,
             dateFrom,
             dateTo,
-            page = 1, 
-            limit = 10, 
+            page = 1,
+            limit = 10,
             sortBy = 'createdAt',
             sortOrder = 'desc',
-            includeRelations = false 
+            includeRelations = false
         } = params || {};
-        
+
         // Build where clause
         const where: Prisma.MediaWhereInput = {};
-        
+
         if (messageId) where.messageId = messageId;
-        if (url) where.url = { contains: url, mode: 'insensitive' };
         if (dateFrom || dateTo) {
             where.createdAt = {};
             if (dateFrom) where.createdAt.gte = dateFrom;
             if (dateTo) where.createdAt.lte = dateTo;
         }
-        
+
         // Get total count
         const total = await db.media.count({ where });
-        
+
         // Build query options
         const queryOptions: Prisma.MediaFindManyArgs = { where };
-        
+
         // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
-        
+
         // Sorting
         const orderBy: Prisma.MediaOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.MediaOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
-        
+
         // Relations
         if (includeRelations) {
             queryOptions.include = {
@@ -87,10 +84,10 @@ class MediaService {
                 }
             };
         }
-        
+
         const items = await db.media.findMany(queryOptions);
         const totalPages = Math.ceil(total / limit);
-        
+
         return {
             items,
             total,

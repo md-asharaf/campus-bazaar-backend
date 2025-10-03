@@ -19,6 +19,10 @@ class ChatService {
                     { user1_id, user2_id },
                     { user1_id: user2_id, user2_id: user1_id }
                 ]
+            },
+            include:{
+                user1: true,
+                user2: true
             }
         });
     }
@@ -37,7 +41,7 @@ class ChatService {
                     { user2_id: userId }
                 ]
             },
-            orderBy: { updatedAt: 'desc' }, // Most recent first
+            orderBy: { updatedAt: 'desc' },
             skip: (page - 1) * limit,
             take: limit,
             include: includeRelations ? {
@@ -153,13 +157,6 @@ class ChatService {
             page,
             limit
         };
-    }
-
-    async updateTimestamp(id: string): Promise<Chat> {
-        return await db.chat.update({
-            where: { id },
-            data: { updatedAt: new Date() }
-        });
     }
 
     async delete(id: string): Promise<void> {

@@ -8,8 +8,22 @@ class MessageService {
         return await db.message.create({ data: validatedData });
     }
 
-    async findById(id: string): Promise<Message | null> {
-        return await db.message.findUnique({ where: { id } });
+    async findById(id: string, options?: { includeRelations?: boolean }): Promise<Message | null> {
+        const { includeRelations = false } = options || {};
+        
+        return await db.message.findUnique({ 
+            where: { id },
+            include: includeRelations ? {
+                media: true,
+                sender: {
+                    select: {
+                        id: true,
+                        name: true,
+                        avatar: true
+                    }
+                }
+            } : undefined
+        });
     }
 
     async findByChatId(chatId: string, options?: {
@@ -21,18 +35,11 @@ class MessageService {
         
         return await db.message.findMany({ 
             where: { chatId },
-            orderBy: { sentAt: 'desc' }, // Latest first for pagination
+            orderBy: { sentAt: 'desc' },
             skip: (page - 1) * limit,
             take: limit,
             include: includeRelations ? {
-                media: {
-                    select: {
-                        id: true,
-                        url: true,
-                        messageId: true,
-                        createdAt: true
-                    }
-                },
+                media: true,
                 sender: {
                     select: {
                         id: true,
@@ -41,13 +48,7 @@ class MessageService {
                     }
                 }
             } : {
-                media: {
-                    select: {
-                        id: true,
-                        url: true,
-                        messageId: true
-                    }
-                }
+                media: true
             }
         });
     }
@@ -95,7 +96,6 @@ class MessageService {
             includeRelations = false 
         } = params || {};
         
-        // Build where clause
         const where: Prisma.MessageWhereInput = {};
         
         if (chatId) where.chatId = chatId;
@@ -115,22 +115,17 @@ class MessageService {
             if (dateTo) where.sentAt.lte = dateTo;
         }
         
-        // Get total count
         const total = await db.message.count({ where });
         
-        // Build query options
         const queryOptions: Prisma.MessageFindManyArgs = { where };
         
-        // Pagination
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
         
-        // Sorting
         const orderBy: Prisma.MessageOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.MessageOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
         
-        // Relations
         if (includeRelations) {
             queryOptions.include = {
                 media: true,
