@@ -26,6 +26,7 @@ export const UserUpdateSchema = UserCreateSchema.partial().omit({
     registrationNo: true,
 });
 
+// Base schemas without relations
 export const UserSchema = z.object({
     id: z.string().uuid(),
     name: z.string(),
@@ -183,15 +184,14 @@ export const MessageSchema = z.object({
 
 // Media Schemas
 export const MediaCreateSchema = z.object({
-    id: z.string(),
-    url: z.string().url(),
+    imageId: z.string().uuid(),
     messageId: z.string().uuid(),
 });
 
 export const MediaSchema = z.object({
-    id: z.string(),
-    url: z.string(),
-    messageId: z.string(),
+    id: z.string().uuid(),
+    imageId: z.string().uuid(),
+    messageId: z.string().uuid(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
@@ -210,56 +210,6 @@ export const ChatSchema = z.object({
     updatedAt: z.date(),
 });
 
-// Type exports for Image
-export type ImageCreate = z.infer<typeof ImageCreateSchema>;
-export type Image = z.infer<typeof ImageSchema>;
-
-// Type exports for Verification
-export type VerificationCreate = z.infer<typeof VerificationCreateSchema>;
-export type VerificationUpdate = z.infer<typeof VerificationUpdateSchema>;
-export type Verification = z.infer<typeof VerificationSchema>;
-
-// Type exports for User
-export type UserCreate = z.infer<typeof UserCreateSchema>;
-export type UserUpdate = z.infer<typeof UserUpdateSchema>;
-export type User = z.infer<typeof UserSchema>;
-
-// Type exports for Admin
-export type AdminCreate = z.infer<typeof AdminCreateSchema>;
-export type Admin = z.infer<typeof AdminSchema>;
-
-// Type exports for Item
-export type ItemCreate = z.infer<typeof ItemCreateSchema>;
-export type ItemUpdate = z.infer<typeof ItemUpdateSchema>;
-export type Item = z.infer<typeof ItemSchema>;
-
-// Type exports for Category
-export type CategoryCreate = z.infer<typeof CategoryCreateSchema>;
-export type CategoryUpdate = z.infer<typeof CategoryUpdateSchema>;
-export type Category = z.infer<typeof CategorySchema>;
-
-// Type exports for Wishlist
-export type WishlistCreate = z.infer<typeof WishlistCreateSchema>;
-export type Wishlist = z.infer<typeof WishlistSchema>;
-
-// Type exports for Feedback
-export type FeedbackCreate = z.infer<typeof FeedbackCreateSchema>;
-export type FeedbackUpdate = z.infer<typeof FeedbackUpdateSchema>;
-export type Feedback = z.infer<typeof FeedbackSchema>;
-
-// Type exports for Message
-export type MessageCreate = z.infer<typeof MessageCreateSchema>;
-export type Message = z.infer<typeof MessageSchema>;
-
-// Type exports for Media
-export type MediaCreate = z.infer<typeof MediaCreateSchema>;
-export type Media = z.infer<typeof MediaSchema>;
-
-// Type exports for Chat
-export type ChatCreate = z.infer<typeof ChatCreateSchema>;
-export type Chat = z.infer<typeof ChatSchema>;
-
-// Common validation schemas for API endpoints
 export const PaginationSchema = z.object({
     page: z.number().int().positive().default(1),
     limit: z.number().int().positive().max(100).default(10),
@@ -275,18 +225,14 @@ export const SearchQuerySchema = z.object({
     available: z.boolean().default(true),
 }).merge(PaginationSchema);
 
-export const IdParamSchema = z.object({
-    id: z.string().uuid("Invalid ID format"),
-});
-
 export const EmailSchema = z.object({
     email: z.string().email("Invalid email format"),
 });
 
 export const PasswordSchema = z.object({
     password: z.string().min(8, "Password must be at least 8 characters")
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-               "Password must contain uppercase, lowercase, number and special character"),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+            "Password must contain uppercase, lowercase, number and special character"),
 });
 
 export const OTPSchema = z.object({
@@ -302,8 +248,8 @@ export const LoginSchema = z.object({
 export const RegisterSchema = z.object({
     email: z.string().email("Invalid email format"),
     password: z.string().min(8, "Password must be at least 8 characters")
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-               "Password must contain uppercase, lowercase, number and special character"),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+            "Password must contain uppercase, lowercase, number and special character"),
     name: z.string().min(1, "Name is required"),
     registrationNo: z.string().min(1, "Registration number is required"),
     branch: z.string().min(1, "Branch is required"),
@@ -313,77 +259,151 @@ export const RegisterSchema = z.object({
 export const ChangePasswordSchema = z.object({
     currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z.string().min(8, "Password must be at least 8 characters")
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-               "Password must contain uppercase, lowercase, number and special character"),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+            "Password must contain uppercase, lowercase, number and special character"),
 });
 
 export const ResetPasswordSchema = z.object({
     email: z.string().email("Invalid email format"),
     otp: z.string().length(6, "OTP must be 6 digits").regex(/^\d{6}$/, "OTP must be numeric"),
     newPassword: z.string().min(8, "Password must be at least 8 characters")
-        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-               "Password must contain uppercase, lowercase, number and special character"),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+            "Password must contain uppercase, lowercase, number and special character"),
 });
 
-// Response schemas
-export const APIResponseSchema = z.object({
-    success: z.boolean(),
-    message: z.string(),
-    data: z.any().optional(),
-    error: z.string().optional(),
+// Simplified relational types for API responses
+export const MessageWithSenderSchema = MessageSchema.extend({
+    sender: UserSchema.pick({ id: true, name: true, avatar: true }),
+    media: z.array(MediaSchema).optional(),
+    tempId: z.string().optional(), // For optimistic UI updates
 });
 
-export const PaginatedResponseSchema = z.object({
-    success: z.boolean().default(true),
-    message: z.string(),
-    data: z.object({
-        items: z.array(z.any()),
-        pagination: z.object({
-            currentPage: z.number().int(),
-            totalPages: z.number().int(),
-            totalItems: z.number().int(),
-            hasNextPage: z.boolean(),
-            hasPrevPage: z.boolean(),
-            limit: z.number().int(),
-        }),
+export const ChatSummarySchema = ChatSchema.extend({
+    otherUser: UserSchema.pick({
+        id: true,
+        name: true,
+        avatar: true,
+        isActive: true,
+        isVerified: true
     }),
+    latestMessage: MessageWithSenderSchema.nullable().optional(),
+    unreadCount: z.number().default(0),
+    type: z.literal('one-to-one').default('one-to-one'),
+    participantCount: z.number().default(2),
 });
 
-// File upload schemas
-export const FileUploadSchema = z.object({
-    fieldname: z.string(),
-    originalname: z.string(),
-    encoding: z.string(),
-    mimetype: z.string(),
-    size: z.number(),
-    buffer: z.instanceof(Buffer),
+// Schemas with Relations - Define all entities with their complete relationships
+export const UserWithRelationsSchema = UserSchema.extend({
+    chats1: z.array(z.lazy(() => ChatSchema)).optional(), // Chats where user is user1
+    chats2: z.array(z.lazy(() => ChatSchema)).optional(), // Chats where user is user2
+    sentMessages: z.array(z.lazy(() => MessageSchema)).optional(),
+    items: z.array(z.lazy(() => ItemSchema)).optional(), // Items they're selling
+    wishlistItems: z.array(z.lazy(() => WishlistSchema)).optional(),
+    feedbacks: z.array(z.lazy(() => FeedbackSchema)).optional(),
+    verifications: z.array(z.lazy(() => VerificationSchema)).optional(),
 });
 
-export const ImageUploadSchema = FileUploadSchema.extend({
-    mimetype: z.string().refine((val) => val.startsWith('image/'), {
-        message: "File must be an image"
-    }),
-    size: z.number().max(5 * 1024 * 1024, "Image size must be less than 5MB"),
+export const ItemWithRelationsSchema = ItemSchema.extend({
+    seller: z.lazy(() => UserSchema).optional(),
+    category: z.lazy(() => CategorySchema).optional(),
+    wishlistedBy: z.array(z.lazy(() => WishlistSchema)).optional(),
 });
 
-// Type exports for authentication schemas
+export const CategoryWithRelationsSchema = CategorySchema.extend({
+    items: z.array(z.lazy(() => ItemSchema)).optional(),
+    image: z.lazy(() => ImageSchema).optional(),
+});
+
+export const WishlistWithRelationsSchema = WishlistSchema.extend({
+    user: z.lazy(() => UserSchema).optional(),
+    item: z.lazy(() => ItemSchema).optional(),
+});
+
+export const FeedbackWithRelationsSchema = FeedbackSchema.extend({
+    user: z.lazy(() => UserSchema).optional(),
+});
+
+export const VerificationWithRelationsSchema = VerificationSchema.extend({
+    user: z.lazy(() => UserSchema).optional(),
+    image: z.lazy(() => ImageSchema).optional(),
+});
+
+export const AdminWithRelationsSchema = AdminSchema.extend({
+    // Admins might have processed verifications in the future
+    processedVerifications: z.array(z.lazy(() => VerificationSchema)).optional(),
+});
+
+export const MessageWithRelationsSchema = MessageSchema.extend({
+    sender: z.lazy(() => UserSchema).optional(),
+    chat: z.lazy(() => ChatSchema).optional(),
+    media: z.array(z.lazy(() => MediaSchema)).optional(),
+});
+
+export const MediaWithRelationsSchema = MediaSchema.extend({
+    message: z.lazy(() => MessageSchema).optional(),
+});
+
+export const ChatWithRelationsSchema = ChatSchema.extend({
+    user1: z.lazy(() => UserSchema).optional(),
+    user2: z.lazy(() => UserSchema).optional(),
+    messages: z.array(z.lazy(() => MessageSchema)).optional(),
+    latestMessage: z.lazy(() => MessageSchema).nullable().optional(),
+    unreadCount: z.number().optional(),
+});
+
+// Main type exports - use the relation schemas as the primary types
+export type User = z.infer<typeof UserWithRelationsSchema>;
+export type Item = z.infer<typeof ItemWithRelationsSchema>;
+export type Category = z.infer<typeof CategoryWithRelationsSchema>;
+export type Wishlist = z.infer<typeof WishlistWithRelationsSchema>;
+export type Feedback = z.infer<typeof FeedbackWithRelationsSchema>;
+export type Verification = z.infer<typeof VerificationWithRelationsSchema>;
+export type Admin = z.infer<typeof AdminWithRelationsSchema>;
+export type Message = z.infer<typeof MessageWithRelationsSchema>;
+export type Media = z.infer<typeof MediaWithRelationsSchema>;
+export type Chat = z.infer<typeof ChatWithRelationsSchema>;
+export type Image = z.infer<typeof ImageSchema>;
+
+// Legacy/simplified relational types for specific use cases
+export type MessageWithSender = z.infer<typeof MessageWithSenderSchema>;
+export type ChatSummary = z.infer<typeof ChatSummarySchema>;
+
+// ================================
+// ALL TYPE EXPORTS
+// ================================
+
+// Create/Update types for entities
+export type UserCreate = z.infer<typeof UserCreateSchema>;
+export type UserUpdate = z.infer<typeof UserUpdateSchema>;
+export type AdminCreate = z.infer<typeof AdminCreateSchema>;
+export type ItemCreate = z.infer<typeof ItemCreateSchema>;
+export type ItemUpdate = z.infer<typeof ItemUpdateSchema>;
+export type CategoryCreate = z.infer<typeof CategoryCreateSchema>;
+export type CategoryUpdate = z.infer<typeof CategoryUpdateSchema>;
+export type WishlistCreate = z.infer<typeof WishlistCreateSchema>;
+export type FeedbackCreate = z.infer<typeof FeedbackCreateSchema>;
+export type FeedbackUpdate = z.infer<typeof FeedbackUpdateSchema>;
+export type MessageCreate = z.infer<typeof MessageCreateSchema>;
+export type MediaCreate = z.infer<typeof MediaCreateSchema>;
+export type ChatCreate = z.infer<typeof ChatCreateSchema>;
+export type VerificationCreate = z.infer<typeof VerificationCreateSchema>;
+export type VerificationUpdate = z.infer<typeof VerificationUpdateSchema>;
+export type ImageCreate = z.infer<typeof ImageCreateSchema>;
+
+// Authentication types
 export type LoginType = z.infer<typeof LoginSchema>;
 export type RegisterType = z.infer<typeof RegisterSchema>;
 export type ChangePasswordType = z.infer<typeof ChangePasswordSchema>;
 export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>;
 
-// Type exports for response schemas
-export type APIResponseType = z.infer<typeof APIResponseSchema>;
-export type PaginatedResponseType = z.infer<typeof PaginatedResponseSchema>;
+// Response types
+// export type APIResponseType = z.infer<typeof APIResponseSchema>;
+// export type PaginatedResponseType = z.infer<typeof PaginatedResponseSchema>;
 
-// Type exports for file schemas
-export type FileUploadType = z.infer<typeof FileUploadSchema>;
-export type ImageUploadType = z.infer<typeof ImageUploadSchema>;
-
-// Type exports for common schemas
-export type PaginationType = z.infer<typeof PaginationSchema>;
+// Common utility types
+// export type PaginationType = z.infer<typeof PaginationSchema>;
 export type SearchQueryType = z.infer<typeof SearchQuerySchema>;
-export type IdParamType = z.infer<typeof IdParamSchema>;
+// export type IdParamType = z.infer<typeof IdParamSchema>;
 export type EmailType = z.infer<typeof EmailSchema>;
 export type PasswordType = z.infer<typeof PasswordSchema>;
 export type OTPType = z.infer<typeof OTPSchema>;

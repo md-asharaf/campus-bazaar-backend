@@ -56,15 +56,7 @@ const EnvConfigSchema = z.object({
             invalid_type_error: "JWT_SECRET must be a string",
         })
         .min(8, "JWT_SECRET must be at least 8 characters long"),
-    // Session configuration for passport
-    SESSION_SECRET: z
-        .string({
-            required_error: "SESSION_SECRET environment variable is required",
-            invalid_type_error: "SESSION_SECRET must be a string",
-        })
-        .min(8, "SESSION_SECRET must be at least 8 characters long")
-        .optional(),
-
+        
     // Security
     REDIS_HOST: z
         .string({

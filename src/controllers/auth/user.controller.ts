@@ -60,7 +60,10 @@ const googleAuth = catchAsync(
 
 const googleCallback = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        passport.authenticate("google", { failureRedirect: "/login" })(
+        passport.authenticate("google", { 
+            session: false,
+            failureRedirect: "/auth/users/google/failure" 
+        })(
             req,
             res,
             async () => {
@@ -109,6 +112,7 @@ const googleCallback = catchAsync(
                         });
                     }
                 } catch (error: any) {
+                    console.log(error)
                     res.status(500).json({
                         success: false,
                         message: "Authentication failed",
