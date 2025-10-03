@@ -1,16 +1,12 @@
 import { Router } from "express";
-import { user } from "@/controllers";
 import { multerMultipleUpload } from "@/middlewares/multer.middleware";
+import { user } from "@/controllers";
 
 const router = Router();
 
-// Chat management
 router.get("/", user.chat.getMyChats);
 router.post("/", user.chat.createOrGetChat);
-
-// Messages
 router.get("/:chatId/messages", user.chat.getChatMessages);
-router.post("/:chatId/messages", multerMultipleUpload, user.chat.sendMessage);
-router.patch("/messages/:messageId/read", user.chat.markMessageAsRead);
+router.post("/:chatId/images", multerMultipleUpload, user.chat.sendImageMessage);
 
 export default router;
