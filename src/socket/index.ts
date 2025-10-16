@@ -66,9 +66,9 @@ class SocketManager {
                 try {
                     socket.join(`chat:${chatId}`);
                     socket.emit('joined_chat', { chatId });
-                    
+
                     socket.to(`chat:${chatId}`).emit('user_online', { userId });
-                    
+
                     logger.info(`User ${userId} joined chat ${chatId}`);
                 } catch (error) {
                     socket.emit('error', { message: 'Failed to join chat' });
@@ -78,9 +78,9 @@ class SocketManager {
             socket.on('leave_chat', ({ chatId }) => {
                 socket.leave(`chat:${chatId}`);
                 socket.emit('left_chat', { chatId });
-                
+
                 socket.to(`chat:${chatId}`).emit('user_offline', { userId });
-                
+
                 logger.info(`User ${userId} left chat ${chatId}`);
             });
 
@@ -154,16 +154,16 @@ class SocketManager {
             });
 
             socket.on('typing_start', ({ chatId }) => {
-                socket.to(`chat:${chatId}`).emit('user_typing', { 
-                    userId, 
-                    chatId 
+                socket.to(`chat:${chatId}`).emit('user_typing', {
+                    userId,
+                    chatId
                 });
             });
 
             socket.on('typing_stop', ({ chatId }) => {
-                socket.to(`chat:${chatId}`).emit('user_stopped_typing', { 
-                    userId, 
-                    chatId 
+                socket.to(`chat:${chatId}`).emit('user_stopped_typing', {
+                    userId,
+                    chatId
                 });
             });
             socket.on('disconnect', (reason) => {
@@ -187,6 +187,19 @@ class SocketManager {
 
     public getOnlineUsersCount(): number {
         return activeUsers.size;
+    }
+    public sendMessageWithImages(messageId: string, senderId: string, chatId: string, content: string, imageUrls: string[]) {
+        try {
+            this.io.to(`chat:${chatId}`).emit('new_message', {
+                messageId,
+                content,
+                senderId,
+                chatId,
+                media: imageUrls
+            });
+        } catch (error) {
+            logger.error('Failed to send message with images via socket', error);
+        }
     }
 }
 

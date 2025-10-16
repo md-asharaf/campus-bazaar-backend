@@ -4,7 +4,7 @@ export interface ServerToClientEvents {
   joined_chat: (data: { chatId: string }) => void;
   left_chat: (data: { chatId: string }) => void;
 
-  new_message: (data: { messageId: string; content: string; senderId: string; chatId: string }) => void;
+  new_message: (data: { messageId: string; content: string; senderId: string; chatId: string, media?: string[] }) => void;
   message_delivered: (data: { messageId: string; deliveredTo: string }) => void;
   message_read: (data: { messageId: string; readBy: string }) => void;
 

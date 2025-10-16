@@ -22,11 +22,9 @@
         "rootDir": "./src",
         "incremental": true,
         "sourceMap": true,
-        "moduleResolution": "node10",
-        "baseUrl": ".",
         "typeRoots": ["./node_modules/@types", "./src/@types"],
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"]
         },
         "types": ["node", "express"]
     },

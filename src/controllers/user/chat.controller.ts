@@ -8,6 +8,7 @@ import { User, Chat } from "@/@types/schema";
 import { APIError } from "@/utils/APIError";
 import { APIResponse } from "@/utils/APIResponse";
 import { uploadImage } from "@/services/imagekit.service";
+import { socketManager } from "@/index";
 
 const validateChatAccess = async (chatId: string, userId: string): Promise<Chat> => {
     const chat = await chatService.findById(chatId);
@@ -162,12 +163,10 @@ const sendImageMessage = catchAsync(async (req: Request, res: Response) => {
         }))
     );
 
-    const completeMessage = await messageService.findById(message.id, { 
-        includeRelations: true 
-    });
+    socketManager.sendMessageWithImages(message.id, user.id, chatId, message.content, uploadedImages.map(image => image.url));
 
     res.status(201).json(new APIResponse(true, "Image message sent successfully", {
-        message: completeMessage
+        message
     }));
 });
 

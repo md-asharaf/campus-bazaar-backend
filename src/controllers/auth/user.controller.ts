@@ -4,7 +4,7 @@ import catchAsync from "@/handlers/async.handler";
 import userService from "@/services/user.service";
 import { APIError } from "@/utils/APIError";
 import { Register, userInterface } from "@/@types/interface";
-import { generateTokens } from "@/services/token.service";
+import { generateTokens, verifyToken } from "@/services/token.service";
 import { redis } from "@/config/database";
 import passport from "passport";
 
@@ -60,9 +60,9 @@ const googleAuth = catchAsync(
 
 const googleCallback = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        passport.authenticate("google", { 
+        passport.authenticate("google", {
             session: false,
-            failureRedirect: "/auth/users/google/failure" 
+            failureRedirect: "/auth/users/google/failure"
         })(
             req,
             res,
@@ -131,9 +131,58 @@ const googleAuthFailure = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const refreshTokens = catchAsync(async (req: Request, res: Response) => {
+    const { refreshToken: token } = req.cookies;
+    if (!token) {
+        throw new APIError(400, "Refresh token is required");
+    }
+    const decodedToken = verifyToken(token);
+    if (!decodedToken) {
+        throw new APIError(400, "Invalid refresh token");
+    }
+
+    const { accessToken, refreshToken } = generateTokens({
+        id: decodedToken.id,
+        jti: decodedToken.jti
+    })
+    const prod = process.env.NODE_ENV === "production";
+    res.status(200).cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: prod,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+    }).cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: prod,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 15,
+    }).json({
+        success: true,
+        message: "Tokens refreshed successfully",
+        data: {
+            accessToken,
+            refreshToken
+        },
+    });
+
+})
+
+const logout = catchAsync(async (req: Request, res: Response) => {
+    res.clearCookie("accessToken", { path: "/" });
+    res.clearCookie("refreshToken", { path: "/" });
+    res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+    });
+})
+
 export default {
     googleAuth,
     googleCallback,
     googleAuthFailure,
     register,
+    refreshTokens,
+    logout
 };

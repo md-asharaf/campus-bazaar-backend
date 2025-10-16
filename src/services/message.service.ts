@@ -10,8 +10,8 @@ class MessageService {
 
     async findById(id: string, options?: { includeRelations?: boolean }): Promise<Message | null> {
         const { includeRelations = false } = options || {};
-        
-        return await db.message.findUnique({ 
+
+        return await db.message.findUnique({
             where: { id },
             include: includeRelations ? {
                 media: true,
@@ -32,8 +32,8 @@ class MessageService {
         includeRelations?: boolean;
     }): Promise<Message[]> {
         const { page = 1, limit = 50, includeRelations = false } = options || {};
-        
-        return await db.message.findMany({ 
+
+        return await db.message.findMany({
             where: { chatId },
             orderBy: { sentAt: 'desc' },
             skip: (page - 1) * limit,
@@ -81,7 +81,7 @@ class MessageService {
         page: number;
         limit: number;
     }> {
-        const { 
+        const {
             chatId,
             senderId,
             search,
@@ -89,15 +89,15 @@ class MessageService {
             read,
             dateFrom,
             dateTo,
-            page = 1, 
-            limit = 10, 
+            page = 1,
+            limit = 10,
             sortBy = 'sentAt',
             sortOrder = 'desc',
-            includeRelations = false 
+            includeRelations = false
         } = params || {};
-        
+
         const where: Prisma.MessageWhereInput = {};
-        
+
         if (chatId) where.chatId = chatId;
         if (senderId) where.senderId = senderId;
         if (search) {
@@ -114,18 +114,18 @@ class MessageService {
             if (dateFrom) where.sentAt.gte = dateFrom;
             if (dateTo) where.sentAt.lte = dateTo;
         }
-        
+
         const total = await db.message.count({ where });
-        
+
         const queryOptions: Prisma.MessageFindManyArgs = { where };
-        
+
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
-        
+
         const orderBy: Prisma.MessageOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.MessageOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
-        
+
         if (includeRelations) {
             queryOptions.include = {
                 media: true,
@@ -138,10 +138,10 @@ class MessageService {
                 }
             };
         }
-        
+
         const items = await db.message.findMany(queryOptions);
         const totalPages = Math.ceil(total / limit);
-        
+
         return {
             items,
             total,
