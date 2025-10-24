@@ -32,23 +32,23 @@ class ItemService {
         page: number;
         limit: number;
     }> {
-        const { 
+        const {
             sellerId,
-            categoryId, 
+            categoryId,
             minPrice,
             maxPrice,
             verified,
             available,
             search,
-            page = 1, 
-            limit = 10, 
+            page = 1,
+            limit = 10,
             sortBy = 'createdAt',
             sortOrder = 'desc',
-            includeRelations = false 
+            includeRelations = false
         } = params || {};
-        
+
         const where: Prisma.ItemWhereInput = {};
-        
+
         if (sellerId) where.sellerId = sellerId;
         if (categoryId) where.categoryId = categoryId;
         if (verified !== undefined) where.isVerified = verified;
@@ -61,18 +61,18 @@ class ItemService {
         if (search) {
             where.title = { contains: search, mode: 'insensitive' };
         }
-        
+
         const total = await db.item.count({ where });
-        
+
         const queryOptions: Prisma.ItemFindManyArgs = { where };
-        
+
         queryOptions.skip = (page - 1) * limit;
         queryOptions.take = limit;
-        
+
         const orderBy: Prisma.ItemOrderByWithRelationInput = {};
         orderBy[sortBy as keyof Prisma.ItemOrderByWithRelationInput] = sortOrder;
         queryOptions.orderBy = orderBy;
-        
+
         if (includeRelations) {
             queryOptions.include = {
                 images: true,
@@ -89,10 +89,10 @@ class ItemService {
                 }
             };
         }
-        
+
         const items = await db.item.findMany(queryOptions);
         const totalPages = Math.ceil(total / limit);
-        
+
         return {
             items,
             total,

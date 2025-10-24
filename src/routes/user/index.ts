@@ -10,10 +10,10 @@ const router = Router();
 router.use(authenticateUser);
 
 // add user authenticated routes here
-router.use("/", profileRoutes);
-router.use("/chat", chatRoutes);
+router.use("/chats", chatRoutes);
 router.use("/items", itemRoutes);
 router.use("/wishlist", wishlistRoutes);
 router.use("/feedback", feedbackRoutes);
+router.use("/", profileRoutes);
 
 export default router;

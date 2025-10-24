@@ -19,6 +19,7 @@
         "@elastic/elasticsearch": "^9.1.1",
         "@prisma/client": "^6.8.2",
         "argon2": "^0.44.0",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "cross-env": "^7.0.3",
         "dotenv": "^17.2.1",
@@ -42,6 +43,7 @@
         "zod": "^3.25.67"
     },
     "devDependencies": {
+        "@types/cookie-parser": "^1.4.10",
         "@types/cors": "^2.8.18",
         "@types/express": "^5.0.2",
         "@types/jsonwebtoken": "^9.0.10",

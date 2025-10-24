@@ -2,6 +2,21 @@ import { Message, MessageCreate, MessageCreateSchema } from "@/@types/schema";
 import { db } from "@/config/database";
 import { Prisma } from "../../generated/prisma";
 
+// Transform message with media relation to include media URLs
+const transformMessage = (message: any): Message => {
+    if (message.media && Array.isArray(message.media)) {
+        return {
+            ...message,
+            media: message.media.map((m: any) => m.image?.url).filter(Boolean)
+        };
+    }
+    return message;
+};
+
+const transformMessages = (messages: any[]): Message[] => {
+    return messages.map(transformMessage);
+};
+
 class MessageService {
     async create(data: MessageCreate): Promise<Message> {
         const validatedData = MessageCreateSchema.parse(data);
@@ -11,35 +26,14 @@ class MessageService {
     async findById(id: string, options?: { includeRelations?: boolean }): Promise<Message | null> {
         const { includeRelations = false } = options || {};
 
-        return await db.message.findUnique({
+        const message = await db.message.findUnique({
             where: { id },
             include: includeRelations ? {
-                media: true,
-                sender: {
-                    select: {
-                        id: true,
-                        name: true,
-                        avatar: true
+                media: {
+                    include: {
+                        image: true
                     }
-                }
-            } : undefined
-        });
-    }
-
-    async findByChatId(chatId: string, options?: {
-        page?: number;
-        limit?: number;
-        includeRelations?: boolean;
-    }): Promise<Message[]> {
-        const { page = 1, limit = 50, includeRelations = false } = options || {};
-
-        return await db.message.findMany({
-            where: { chatId },
-            orderBy: { sentAt: 'desc' },
-            skip: (page - 1) * limit,
-            take: limit,
-            include: includeRelations ? {
-                media: true,
+                },
                 sender: {
                     select: {
                         id: true,
@@ -48,9 +42,68 @@ class MessageService {
                     }
                 }
             } : {
-                media: true
+                media: {
+                    include: {
+                        image: true
+                    }
+                }
             }
         });
+
+        return message ? transformMessage(message) : null;
+    }
+
+    async findByChatId(chatId: string, options?: {
+        page?: number;
+        limit?: number;
+        includeRelations?: boolean;
+    }): Promise<{
+        items: Message[];
+        total: number;
+        totalPages: number;
+        page: number;
+        limit: number;
+    }> {
+        const { page = 1, limit = 50, includeRelations = false } = options || {};
+
+        const total = await db.message.count({ where: { chatId } });
+
+        const items = await db.message.findMany({
+            where: { chatId },
+            orderBy: { sentAt: 'desc' },
+            skip: (page - 1) * limit,
+            take: limit,
+            include: includeRelations ? {
+                media: {
+                    include: {
+                        image: true
+                    }
+                },
+                sender: {
+                    select: {
+                        id: true,
+                        name: true,
+                        avatar: true
+                    }
+                }
+            } : {
+                media: {
+                    include: {
+                        image: true
+                    }
+                }
+            }
+        });
+
+        const totalPages = Math.ceil(total / limit);
+
+        return {
+            items: transformMessages(items),
+            total,
+            totalPages,
+            page,
+            limit
+        };
     }
 
     async countByChatId(chatId: string): Promise<number> {
@@ -128,12 +181,24 @@ class MessageService {
 
         if (includeRelations) {
             queryOptions.include = {
-                media: true,
+                media: {
+                    include: {
+                        image: true
+                    }
+                },
                 sender: {
                     select: {
                         id: true,
                         name: true,
                         avatar: true
+                    }
+                }
+            };
+        } else {
+            queryOptions.include = {
+                media: {
+                    include: {
+                        image: true
                     }
                 }
             };
@@ -143,7 +208,7 @@ class MessageService {
         const totalPages = Math.ceil(total / limit);
 
         return {
-            items,
+            items: transformMessages(items),
             total,
             totalPages,
             page,

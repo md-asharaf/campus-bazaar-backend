@@ -9,7 +9,7 @@ function generateCode(): string {
 export async function generateOtp(email: string): Promise<string> {
     try {
         const otp = generateCode();
-        await redis.setValue(`otp:${email}`, otp, 180);
+        await redis.setValue(`otp:${email}`, otp, 300);
         logger.debug("[OTP_SERVICE] OTP stored in Redis", {
             email: email,
             expirySeconds: 180,

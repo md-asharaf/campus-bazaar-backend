@@ -1,158 +1,160 @@
 generator client {
-    provider = "prisma-client-js"
-    output   = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
-    id        String    @id @default(uuid())
-    role      AdminRole @default(SUB)
-    name      String
-    email     String    @unique
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @default(now()) @updatedAt
+  id        String    @id @default(uuid())
+  role      AdminRole @default(SUB)
+  name      String
+  email     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 model User {
-    id             String     @id @default(uuid())
-    name           String
-    email          String     @unique
-    avatar         String?
-    bio            String?
-    phone          String?
-    isVerified     Boolean    @default(false)
-    isActive       Boolean    @default(true)
-    registrationNo String     @unique
-    branch         String
-    year           Int
-    createdAt      DateTime   @default(now())
-    updatedAt      DateTime   @updatedAt
-    wishlists      Wishlist[]
-    feedback       Feedback?
-    messages       Message[]
-    chatsAsUser1   Chat[]     @relation("User1Chats")
-    chatsAsUser2   Chat[]     @relation("User2Chats")
+  id             String     @id @default(uuid())
+  name           String
+  email          String     @unique
+  avatar         String?
+  bio            String?
+  phone          String?
+  isVerified     Boolean    @default(false)
+  isActive       Boolean    @default(true)
+  registrationNo String     @unique
+  branch         String
+  year           Int
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  wishlists      Wishlist[]
+  feedback       Feedback?
+  messages       Message[]
+  items          Item[]
+  chatsAsUser1   Chat[]     @relation("User1Chats")
+  chatsAsUser2   Chat[]     @relation("User2Chats")
 }
 
 model Verification {
-    id        String             @id @default(uuid())
-    userId    String             @unique
-    imageId   String             @unique
-    status    VerificationStatus @default(PENDING)
-    createdAt DateTime           @default(now())
-    updatedAt DateTime           @default(now())
-    image     Image              @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  id        String             @id @default(uuid())
+  userId    String             @unique
+  imageId   String             @unique
+  status    VerificationStatus @default(PENDING)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now())
+  image     Image              @relation(fields: [imageId], references: [id], onDelete: Cascade)
 }
 
 model Image {
-    id            String         @id
-    url           String         @unique
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
-    items         Item[]
-    verifications Verification[]
-    Category      Category[]
-    media         Media[]
+  id            String         @id
+  url           String         @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  items         Item[]
+  verifications Verification[]
+  Category      Category[]
+  media         Media[]
 }
 
 model Item {
-    id         String     @id @default(uuid())
-    title      String
-    price      Float
-    sellerId   String
-    isVerified Boolean    @default(false)
-    isSold     Boolean    @default(false)
-    categoryId String?
-    createdAt  DateTime   @default(now())
-    updatedAt  DateTime   @updatedAt
-    images     Image[]
-    category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-    wishlists  Wishlist[]
+  id         String     @id @default(uuid())
+  title      String
+  price      Float
+  sellerId   String
+  isVerified Boolean    @default(false)
+  isSold     Boolean    @default(false)
+  categoryId String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  images     Image[]
+  seller     User       @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  wishlists  Wishlist[]
 }
 
 model Category {
-    id        String   @id @default(uuid())
-    name      String   @unique
-    imageId   String?
-    image     Image?   @relation(fields: [imageId], references: [id], onDelete: SetNull)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    items     Item[]
+  id        String   @id @default(uuid())
+  name      String   @unique
+  imageId   String?
+  image     Image?   @relation(fields: [imageId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items     Item[]
 }
 
 model Wishlist {
-    id        String   @id @default(uuid())
-    userId    String
-    itemId    String
-    createdAt DateTime @default(now())
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  userId    String
+  itemId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
 
-    @@unique([userId, itemId])
+  @@unique([userId, itemId])
 }
 
 model Feedback {
-    id        String   @id @default(uuid())
-    content   String
-    rating    Int      @default(1)
-    userId    String   @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  content   String
+  rating    Int      @default(1)
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Message {
-    id          String    @id @default(uuid())
-    content     String
-    senderId    String
-    chatId      String
-    deliveredAt DateTime?
-    readAt      DateTime?
-    sentAt      DateTime  @default(now())
-    sender      User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
-    chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
-    media       Media[]
+  id          String    @id @default(uuid())
+  content     String
+  senderId    String
+  chatId      String
+  deliveredAt DateTime?
+  readAt      DateTime?
+  sentAt      DateTime  @default(now())
+  sender      User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  chat        Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  media       Media[]
 }
 
 model Media {
-    id        String   @id @default(uuid())
-    imageId   String
-    messageId String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
-    image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  imageId   String
+  messageId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
 }
 
 model Chat {
-    id        String    @id @default(uuid())
-    user1_id  String
-    user2_id  String
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    user1     User      @relation("User1Chats", fields: [user1_id], references: [id], onDelete: Cascade)
-    user2     User      @relation("User2Chats", fields: [user2_id], references: [id], onDelete: Cascade)
-    messages  Message[]
+  id        String    @id @default(uuid())
+  user1_id  String
+  user2_id  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user1     User      @relation("User1Chats", fields: [user1_id], references: [id], onDelete: Cascade)
+  user2     User      @relation("User2Chats", fields: [user2_id], references: [id], onDelete: Cascade)
+  messages  Message[]
 
-    @@unique([user1_id, user2_id])
+  @@unique([user1_id, user2_id])
 }
 
 enum AdminRole {
-    SUPER
-    SUB
+  SUPER
+  SUB
 }
 
 enum VerificationStatus {
-    PENDING
-    VERIFIED
-    REJECTED
+  PENDING
+  VERIFIED
+  REJECTED
 }
 
 enum ImageStatus {
-    ACTIVE
-    INACTIVE
+  ACTIVE
+  INACTIVE
 }
