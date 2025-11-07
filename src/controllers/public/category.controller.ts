@@ -34,7 +34,7 @@ const getCategoryById = catchAsync(async (req: Request, res: Response) => {
     throw new APIError(404, "Category not found");
   }
 
-  res.json(new APIResponse(true, "Category retrieved successfully", category));
+  res.json(new APIResponse(true, "Category retrieved successfully", { category }));
 });
 
 export default {

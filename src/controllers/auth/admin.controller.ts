@@ -9,6 +9,7 @@ import { Login, VerifyLogin } from "@/@types/interface";
 import mailService from "@/services/email.service";
 import envVars from "@/config/envVars";
 const login = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.body.email)
   const { email } = req.body as Login;
   if (!email) {
     throw new APIError(400, "Email is required");
@@ -16,6 +17,7 @@ const login = catchAsync(async (req: Request, res: Response) => {
   const admin = await db.admin.findUnique({
     where: { email },
   });
+  console.log(admin)
   if (!admin) {
     throw new APIError(404, "Admin not found");
   }

@@ -6,6 +6,8 @@
         "dev": "cross-env NODE_ENV=development nodemon -r module-alias/register src/index.ts",
         "build": "tsc",
         "start": "cross-env NODE_ENV=production node -r module-alias/register dist/index.js",
+        "seed": "ts-node -r module-alias/register seed.ts",
+        "clear-db": "ts-node -r module-alias/register clear-db.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "_moduleAliases": {

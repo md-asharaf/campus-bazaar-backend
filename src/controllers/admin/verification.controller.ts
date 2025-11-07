@@ -21,18 +21,19 @@ const getAllVerifications = async (req: Request, res: Response) => {
         limit = 10,
         sortOrder = 'desc',
         sortBy = 'createdAt',
-        status
+        status,
+        includeRelations = false
     } = QuerySchema.parse(req.query);
-    
+
     const result = await verificationService.findMany({
         page,
         limit,
         sortBy,
         sortOrder: sortOrder as 'asc' | 'desc',
         status: status as VerificationStatus,
-        includeRelations: true
+        includeRelations
     });
-    
+    console.log(result)
     res.status(200).json(
         new APIResponse(true, "verifications retrieved successfully", result),
     );

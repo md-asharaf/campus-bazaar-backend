@@ -25,7 +25,6 @@ class MessageService {
 
     async findById(id: string, options?: { includeRelations?: boolean }): Promise<Message | null> {
         const { includeRelations = false } = options || {};
-
         const message = await db.message.findUnique({
             where: { id },
             include: includeRelations ? {

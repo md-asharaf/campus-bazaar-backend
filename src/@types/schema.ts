@@ -304,7 +304,7 @@ export const UserWithRelationsSchema = UserSchema.extend({
   items: z.array(z.lazy(() => ItemSchema)).optional(), // Items they're selling
   wishlistItems: z.array(z.lazy(() => WishlistSchema)).optional(),
   feedbacks: z.array(z.lazy(() => FeedbackSchema)).optional(),
-  verifications: z.array(z.lazy(() => VerificationSchema)).optional(),
+  verification: VerificationSchema.optional(),
 });
 
 export const ItemWithRelationsSchema = ItemSchema.extend({

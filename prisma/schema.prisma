@@ -18,25 +18,26 @@ model Admin {
 }
 
 model User {
-  id             String     @id @default(uuid())
+  id             String        @id @default(uuid())
   name           String
-  email          String     @unique
+  email          String        @unique
   avatar         String?
   bio            String?
   phone          String?
-  isVerified     Boolean    @default(false)
-  isActive       Boolean    @default(true)
-  registrationNo String     @unique
+  isVerified     Boolean       @default(false)
+  isActive       Boolean       @default(true)
+  registrationNo String        @unique
   branch         String
   year           Int
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
   wishlists      Wishlist[]
   feedback       Feedback?
   messages       Message[]
   items          Item[]
-  chatsAsUser1   Chat[]     @relation("User1Chats")
-  chatsAsUser2   Chat[]     @relation("User2Chats")
+  chatsAsUser1   Chat[]        @relation("User1Chats")
+  chatsAsUser2   Chat[]        @relation("User2Chats")
+  verification   Verification?
 }
 
 model Verification {
@@ -46,6 +47,7 @@ model Verification {
   status    VerificationStatus @default(PENDING)
   createdAt DateTime           @default(now())
   updatedAt DateTime           @default(now())
+  user      User?              @relation(fields: [userId], references: [id])
   image     Image              @relation(fields: [imageId], references: [id], onDelete: Cascade)
 }
 

@@ -30,6 +30,11 @@ app.use(helmet({
 
 app.use(passport.initialize());
 
+app.get('/', (req, res) => res.status(200).json({
+  success: true,
+  message: 'Welcome to the API',
+  timestamp: new Date().toISOString(),
+}));
 app.use(router);
 app.use((req, res) => res.status(404).json({
   success: false,

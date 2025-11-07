@@ -76,6 +76,14 @@ class ItemService {
         if (includeRelations) {
             queryOptions.include = {
                 images: true,
+                seller: {
+                    select: {
+                        id: true,
+                        name: true,
+                        avatar: true,
+                        isVerified: true
+                    }
+                },
                 category: {
                     include: {
                         image: true
