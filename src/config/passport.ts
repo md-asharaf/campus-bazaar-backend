@@ -43,7 +43,7 @@ const verify = async (
 const options: StrategyOptionsWithRequest = {
   clientID: envVars.GOOGLE_CLIENT_ID as string,
   clientSecret: envVars.GOOGLE_CLIENT_SECRET as string,
-  callbackURL: '/auth/users/google/callback',
+  callbackURL: 'https://unnati.asharaf.me/auth/users/google/callback',
   passReqToCallback: true,
   scope: ["profile", "email"],
 }
