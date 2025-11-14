@@ -39,11 +39,11 @@ const verify = async (
     return done(new Error("Google authentication failed"), false);
   }
 }
-
+const prod = process.env.NODE_ENV === "production";
 const options: StrategyOptionsWithRequest = {
   clientID: envVars.GOOGLE_CLIENT_ID as string,
   clientSecret: envVars.GOOGLE_CLIENT_SECRET as string,
-  callbackURL: 'https://unnati.asharaf.me/auth/users/google/callback',
+  callbackURL: prod ? "https://unnati.asharaf.me/auth/users/google/callback" : "http://localhost:3000/auth/users/google/callback",
   passReqToCallback: true,
   scope: ["profile", "email"],
 }

@@ -44,13 +44,13 @@ const register = catchAsync(async (req: Request, res: Response) => {
   res.status(200).cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: prod,
-    sameSite: "lax",
+    sameSite: prod ? "none" : "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7 * 1000,
   }).cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: prod,
-    sameSite: "lax",
+    sameSite: prod ? "none" : "lax",
     path: "/",
     maxAge: 60 * 15 * 1000,
   }).json({
@@ -113,18 +113,18 @@ const googleCallback = catchAsync(
             res.cookie("refreshToken", refreshToken, {
               httpOnly: true,
               secure: prod,
-              sameSite: "none",
+              sameSite: prod ? "none" : "lax",
               path: "/",
               maxAge: 60 * 60 * 24 * 7 * 1000,
             }).cookie("accessToken", accessToken, {
               httpOnly: true,
               secure: prod,
-              sameSite: "none",
+              sameSite: prod ? "none" : "lax",
               path: "/",
               maxAge: 60 * 15 * 1000,
             });
 
-            return res.redirect(`${envVars.FRONTEND_URL}/dashboard?success=true`);
+            return res.redirect(`${envVars.FRONTEND_URL}/dashboard`);
           }
         } catch (error: any) {
           console.log(error)
@@ -160,13 +160,13 @@ const refreshTokens = catchAsync(async (req: Request, res: Response) => {
   res.status(200).cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: prod,
-    sameSite: "lax",
+    sameSite: prod ? "none" : "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7 * 1000,
   }).cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: prod,
-    sameSite: "lax",
+    sameSite: prod ? "none" : "lax",
     path: "/",
     maxAge: 60 * 15 * 1000,
   }).json({
