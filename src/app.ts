@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 const isProd = envVars.NODE_ENV === 'production';
+app.set("trust proxy", 1);
 
 handleUnhandledRejection();
 handleUncaughtException();
@@ -22,7 +23,6 @@ app.use(cors({
   origin: envVars.FRONTEND_URL,
   credentials: true,
 }));
-app.set("trust proxy", 1);
 app.use(morgan(isProd ? 'combined' : 'dev'));
 app.use(helmet({
   crossOriginEmbedderPolicy: false,

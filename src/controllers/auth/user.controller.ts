@@ -109,17 +109,16 @@ const googleCallback = catchAsync(
               id: existingUser.id,
               jti,
             });
-            const prod = envVars.NODE_ENV === "production";
             res.cookie("refreshToken", refreshToken, {
               httpOnly: true,
-              secure: prod,
-              sameSite: prod ? "none" : "lax",
+              secure: true,
+              sameSite: "none",
               path: "/",
               maxAge: 60 * 60 * 24 * 7 * 1000,
             }).cookie("accessToken", accessToken, {
               httpOnly: true,
-              secure: prod,
-              sameSite: prod ? "none" : "lax",
+              secure: true,
+              sameSite: "none",
               path: "/",
               maxAge: 60 * 15 * 1000,
             });
