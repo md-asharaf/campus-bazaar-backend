@@ -2,12 +2,11 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import catchAsync from "@/handlers/async.handler";
 import { generateOtp, verifyOtp } from "@/services/otp.service";
-import { generateTokens } from "@/services/token.service";
+import { generateTokens, verifyToken } from "@/services/token.service";
 import { APIError } from "@/utils/APIError";
 import { db } from "@/config/database";
 import { Login, VerifyLogin } from "@/@types/interface";
 import mailService from "@/services/email.service";
-import envVars from "@/config/envVars";
 const login = catchAsync(async (req: Request, res: Response) => {
   console.log(req.body.email)
   const { email } = req.body as Login;
@@ -54,17 +53,16 @@ const verifyLogin = catchAsync(async (req: Request, res: Response) => {
     id: admin.id,
     jti,
   });
-  const prod = envVars.NODE_ENV == "production";
   res.status(200).cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: prod,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     path: "/",
     maxAge: 60 * 60 * 24 * 7 * 1000,
   }).cookie("accessToken", accessToken, {
     httpOnly: true,
-    secure: prod,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
     path: "/",
     maxAge: 60 * 15 * 1000,
   }).json({
@@ -79,8 +77,8 @@ const verifyLogin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const logout = catchAsync(async (req: Request, res: Response) => {
-  res.clearCookie("accessToken", { path: "/" });
-  res.clearCookie("refreshToken", { path: "/" });
+  res.clearCookie("accessToken", { path: "/", secure: true, sameSite: "none" });
+  res.clearCookie("refreshToken", { path: "/", secure: true, sameSite: "none" });
   res.status(200).json({
     success: true,
     message: "Logged out successfully",
@@ -88,8 +86,47 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   return;
 })
 
+const refreshTokens = catchAsync(async (req: Request, res: Response) => {
+  const { refreshToken: token } = req.cookies;
+  if (!token) {
+    throw new APIError(400, "Refresh token is required");
+  }
+  const decodedToken = verifyToken(token);
+  if (!decodedToken) {
+    throw new APIError(400, "Invalid refresh token");
+  }
+
+  const { accessToken, refreshToken } = generateTokens({
+    id: decodedToken.id,
+    jti: decodedToken.jti
+  });
+
+  res.status(200).cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7 * 1000,
+  }).cookie("accessToken", accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 60 * 15 * 1000,
+  }).json({
+    success: true,
+    message: "Tokens refreshed successfully",
+    data: {
+      accessToken,
+      refreshToken
+    },
+  });
+  return;
+})
+
 export default {
   login,
   verifyLogin,
+  refreshTokens,
   logout
 };
