@@ -17,7 +17,7 @@ RUN pnpm prisma generate
 # Build the application (needs dev dependencies, so build before pruning)
 RUN pnpm run build
 
-# Now prune dev dependencies for smaller production image  
+# Now prune dev dependencies for smaller production image
 RUN pnpm prune --prod
 
 
@@ -36,7 +36,7 @@ EXPOSE 3000
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD 2222222222222222222222222222222 || exit 1
+  CMD curl -f http://localhost:3000/health || exit 1
 
 # Start the application
 CMD ["node", "-r", "module-alias/register", "dist/index.js"]
