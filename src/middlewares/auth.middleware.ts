@@ -24,15 +24,6 @@ export const authenticateUser = catchAsync(
 
     if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
       token = authHeader.substring("Bearer ".length).trim();
-    } else {
-      const cookiesHeader = req.headers.cookie;
-      if (cookiesHeader) {
-        token = cookiesHeader
-          .split(";")
-          .map((cookie) => cookie.trim())
-          .find((cookie) => cookie.startsWith("accessToken="))
-          ?.split("=")[1];
-      }
     }
 
     if (!token) {

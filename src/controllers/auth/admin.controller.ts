@@ -78,10 +78,6 @@ const refreshTokens = catchAsync(async (req: Request, res: Response) => {
   const auth = req.headers.authorization;
   if (typeof auth === "string" && auth.startsWith("Bearer ")) {
     token = auth.substring("Bearer ".length).trim();
-  } else if (req.body && typeof req.body.refreshToken === "string") {
-    token = req.body.refreshToken;
-  } else if (typeof (req.query as any)?.refreshToken === "string") {
-    token = (req.query as any).refreshToken as string;
   }
   if (!token) {
     throw new APIError(400, "Refresh token is required");
