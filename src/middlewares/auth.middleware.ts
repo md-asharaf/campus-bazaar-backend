@@ -19,20 +19,25 @@ declare global {
 
 export const authenticateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const cookiesHeader = req.headers.cookie;
-    if (!cookiesHeader) {
-      throw new APIError(401, "Unauthorized. No cookies provided.");
-    }
+    const authHeader = req.headers.authorization;
+    let token: string | undefined;
 
-    const token = cookiesHeader
-      .split(";")
-      .map((cookie) => cookie.trim())
-      .find((cookie) => cookie.startsWith("accessToken="))
-      ?.split("=")[1];
+    if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring("Bearer ".length).trim();
+    } else {
+      const cookiesHeader = req.headers.cookie;
+      if (cookiesHeader) {
+        token = cookiesHeader
+          .split(";")
+          .map((cookie) => cookie.trim())
+          .find((cookie) => cookie.startsWith("accessToken="))
+          ?.split("=")[1];
+      }
+    }
 
     if (!token) {
       logger.warn(
-        "[AUTH_MIDDLEWARE] No accessToken cookie found in request",
+        "[AUTH_MIDDLEWARE] No bearer token or accessToken cookie found in request",
       );
       throw new APIError(
         401,

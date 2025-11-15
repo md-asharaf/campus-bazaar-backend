@@ -41,19 +41,7 @@ const register = catchAsync(async (req: Request, res: Response) => {
     jti,
   });
 
-  res.status(200).cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7 * 1000,
-  }).cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 15 * 1000,
-  }).json({
+  res.status(200).json({
     success: true,
     message: "user registered successfully",
     data: {
@@ -109,21 +97,14 @@ const googleCallback = catchAsync(
               id: existingUser.id,
               jti,
             });
-            res.cookie("refreshToken", refreshToken, {
-              httpOnly: true,
-              secure: true,
-              sameSite: "none",
-              path: "/",
-              maxAge: 60 * 60 * 24 * 7 * 1000,
-            }).cookie("accessToken", accessToken, {
-              httpOnly: true,
-              secure: true,
-              sameSite: "none",
-              path: "/",
-              maxAge: 60 * 15 * 1000,
-            });
-
-            return res.redirect(`${envVars.FRONTEND_URL}/dashboard`);
+            /**
+             * Bearer tokens: redirect with tokens in query string.
+             * Frontend should capture and store accessToken in memory (or secure storage) and refresh when needed.
+             */
+            const redirectUrl = new URL(`${envVars.FRONTEND_URL}/dashboard`);
+            redirectUrl.searchParams.set("accessToken", accessToken);
+            redirectUrl.searchParams.set("refreshToken", refreshToken);
+            return res.redirect(redirectUrl.toString());
           }
         } catch (error: any) {
           console.log(error)
@@ -142,10 +123,21 @@ const googleAuthFailure = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refreshTokens = catchAsync(async (req: Request, res: Response) => {
-  const { refreshToken: token } = req.cookies;
+  let token: string | undefined;
+
+  const auth = req.headers.authorization;
+  if (typeof auth === "string" && auth.startsWith("Bearer ")) {
+    token = auth.substring("Bearer ".length).trim();
+  } else if (req.body && typeof req.body.refreshToken === "string") {
+    token = req.body.refreshToken;
+  } else if (typeof (req.query as any)?.refreshToken === "string") {
+    token = (req.query as any).refreshToken as string;
+  }
+
   if (!token) {
     throw new APIError(400, "Refresh token is required");
   }
+
   const decodedToken = verifyToken(token);
   if (!decodedToken) {
     throw new APIError(400, "Invalid refresh token");
@@ -155,19 +147,7 @@ const refreshTokens = catchAsync(async (req: Request, res: Response) => {
     id: decodedToken.id,
     jti: decodedToken.jti
   })
-  res.status(200).cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7 * 1000,
-  }).cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 15 * 1000,
-  }).json({
+  res.status(200).json({
     success: true,
     message: "Tokens refreshed successfully",
     data: {
@@ -179,8 +159,7 @@ const refreshTokens = catchAsync(async (req: Request, res: Response) => {
 })
 
 const logout = catchAsync(async (req: Request, res: Response) => {
-  res.clearCookie("accessToken", { path: "/", secure: true, sameSite: "none" });
-  res.clearCookie("refreshToken", { path: "/", secure: true, sameSite: "none" });
+
   res.status(200).json({
     success: true,
     message: "Logged out successfully",

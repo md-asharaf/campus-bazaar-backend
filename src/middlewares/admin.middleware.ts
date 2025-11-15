@@ -9,20 +9,25 @@ import { db } from "@/config/database";
 
 export const authenticateAdmin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const cookiesHeader = req.headers.cookie;
-    if (!cookiesHeader) {
-      throw new APIError(401, "Unauthorized. No cookies provided.");
+    const authHeader = req.headers.authorization;
+    let token: string | undefined;
+
+    if (typeof authHeader === "string" && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring("Bearer ".length).trim();
+    } else {
+      const cookiesHeader = req.headers.cookie;
+      if (cookiesHeader) {
+        token = cookiesHeader
+          .split(";")
+          .map((cookie) => cookie.trim())
+          .find((cookie) => cookie.startsWith("accessToken="))
+          ?.split("=")[1];
+      }
     }
-    
-    const token = cookiesHeader
-      .split(";")
-      .map((cookie) => cookie.trim())
-      .find((cookie) => cookie.startsWith("accessToken="))
-      ?.split("=")[1];
 
     if (!token) {
       logger.warn(
-        "[ADMIN_MIDDLEWARE] No accessToken cookie found in request",
+        "[ADMIN_MIDDLEWARE] No bearer token or accessToken cookie found in request",
       );
       throw new APIError(
         401,

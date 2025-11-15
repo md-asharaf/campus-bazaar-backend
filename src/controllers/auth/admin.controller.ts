@@ -8,7 +8,6 @@ import { db } from "@/config/database";
 import { Login, VerifyLogin } from "@/@types/interface";
 import mailService from "@/services/email.service";
 const login = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.body.email)
   const { email } = req.body as Login;
   if (!email) {
     throw new APIError(400, "Email is required");
@@ -53,21 +52,9 @@ const verifyLogin = catchAsync(async (req: Request, res: Response) => {
     id: admin.id,
     jti,
   });
-  res.status(200).cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7 * 1000,
-  }).cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 15 * 1000,
-  }).json({
+  res.status(200).json({
     success: true,
-    message: "user registered successfully",
+    message: "Admin login successful",
     data: {
       accessToken,
       refreshToken
@@ -77,8 +64,7 @@ const verifyLogin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const logout = catchAsync(async (req: Request, res: Response) => {
-  res.clearCookie("accessToken", { path: "/", secure: true, sameSite: "none" });
-  res.clearCookie("refreshToken", { path: "/", secure: true, sameSite: "none" });
+// No cookies to clear in bearer strategy
   res.status(200).json({
     success: true,
     message: "Logged out successfully",
@@ -87,7 +73,16 @@ const logout = catchAsync(async (req: Request, res: Response) => {
 })
 
 const refreshTokens = catchAsync(async (req: Request, res: Response) => {
-  const { refreshToken: token } = req.cookies;
+  let token: string | undefined;
+
+  const auth = req.headers.authorization;
+  if (typeof auth === "string" && auth.startsWith("Bearer ")) {
+    token = auth.substring("Bearer ".length).trim();
+  } else if (req.body && typeof req.body.refreshToken === "string") {
+    token = req.body.refreshToken;
+  } else if (typeof (req.query as any)?.refreshToken === "string") {
+    token = (req.query as any).refreshToken as string;
+  }
   if (!token) {
     throw new APIError(400, "Refresh token is required");
   }
@@ -101,19 +96,7 @@ const refreshTokens = catchAsync(async (req: Request, res: Response) => {
     jti: decodedToken.jti
   });
 
-  res.status(200).cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7 * 1000,
-  }).cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    path: "/",
-    maxAge: 60 * 15 * 1000,
-  }).json({
+  res.status(200).json({
     success: true,
     message: "Tokens refreshed successfully",
     data: {
